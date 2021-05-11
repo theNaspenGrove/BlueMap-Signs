@@ -1,5 +1,7 @@
 package net.mov51.helpers;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import net.mov51.BlueMapSigns;
@@ -14,7 +16,7 @@ import java.util.Optional;
 
 public class iconHelper {
 
-    public static Map<String,String> icons = new HashMap<>();
+    public static Map<String,pairHelper<String,BufferedImage>> icons = new HashMap<String,pairHelper<String,BufferedImage>>();
 
     public static void makeData(){
         BlueMapAPI.getInstance().ifPresent(api -> {
@@ -39,13 +41,14 @@ public class iconHelper {
                                 BufferedImage image = ImageIO.read(file);
                                 //create the image and store it's path using the BlueMap api
                                 path = api.createImage(image,cleanName);
+                                //add the new icon to the map for verification later.
+                                icons.put(cleanName,new pairHelper<>(path,image));
+
+                                //todo add prefix to add output
+                                System.out.println("added " + cleanName);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            //add the new icon to the map for verification later.
-                            icons.put(cleanName,path);
-                            //todo add prefix to add output
-                            System.out.println("added " + cleanName);
                         }
                     }
                 }

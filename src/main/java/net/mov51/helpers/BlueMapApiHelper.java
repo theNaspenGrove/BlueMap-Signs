@@ -2,7 +2,6 @@ package net.mov51.helpers;
 
 import com.flowpowered.math.vector.Vector3d;
 import de.bluecolored.bluemap.api.BlueMapAPI;
-import de.bluecolored.bluemap.api.marker.Marker;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
 import de.bluecolored.bluemap.api.marker.POIMarker;
@@ -12,8 +11,6 @@ import org.bukkit.World;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
-
 public class BlueMapApiHelper {
 
     public static void createMarkerPOI(String markerName, Location l,String icon){
@@ -22,11 +19,12 @@ public class BlueMapApiHelper {
 
         //loop through all maps on the given world and add a marker at the provided location.
         // Will perform a location check when that's opened in the API.
-        BlueMapAPI.getInstance().get().getWorld(world.getUID()).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
+        BlueMapAPI.getInstance().ifPresent(api -> api.getWorld(world != null ? world.getUID() : null).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
             //create marker api
-            MarkerAPI api = getMarkerAPI();
+            MarkerAPI markerAPI = getMarkerAPI(api);
+            assert markerAPI != null;
             //create marker set
-            MarkerSet SignMarkerSet = api.createMarkerSet("SIGN_MARKER_SET");
+            MarkerSet SignMarkerSet = markerAPI.createMarkerSet("SIGN_MARKER_SET");
             //set the marker set label
             SignMarkerSet.setLabel("User created markers");
             //generate 3d vector to create poiMarker
@@ -34,38 +32,45 @@ public class BlueMapApiHelper {
             //create the marker ID
             String ID = generateMarkerID(l);
             //Create the marker Object
-            POIMarker marker = SignMarkerSet.createPOIMarker(ID,map,markerPos);
+            POIMarker marker = SignMarkerSet.createPOIMarker(ID, map, markerPos);
             System.out.println("created marker " + ID);
             //set the marker label
             marker.setLabel(markerName);
-            if(iconHelper.icons.containsKey(icon)){
+            if (iconHelper.icons.containsKey(icon)) {
 
-                String iconPath = iconHelper.icons.get(icon);
+                pairHelper<String, BufferedImage> pair = iconHelper.icons.get(icon);
 
-                marker.setIcon(iconPath,0,0);
+                String iconPath = pair.getFirst();
+                BufferedImage image = pair.getSecond();
+
+                int x = image.getHeight() / 2;
+                int y = image.getWidth() / 2;
+                marker.setIcon(iconPath, x, y);
             }
             //save changes
-            saveMarkerAPI(api);
+            saveMarkerAPI(markerAPI);
 
-        }));
+        })));
     }
+
 
     //Method overload for optional default POI icon
     public static void createMarkerPOI(String markerName, Location l){
         createMarkerPOI(markerName,l,"default");
     }
 
-    public static void removeMarkerPOI(Location l){
+    public static void removeMarkerPOI(Location l) {
         //get world to run loop om
         World world = l.getWorld();
 
         //loop through all maps on the given world and add a marker at the provided location.
         // Will perform a location check when that's opened in the API.
-        BlueMapAPI.getInstance().get().getWorld(world.getUID()).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
+        BlueMapAPI.getInstance().ifPresent(api -> api.getWorld(world != null ? world.getUID() : null).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
             //create marker api
-            MarkerAPI api = getMarkerAPI();
+            MarkerAPI markerAPI = getMarkerAPI(api);
+            assert markerAPI != null;
             //create marker set
-            MarkerSet SignMarkerSet = api.createMarkerSet("SIGN_MARKER_SET");
+            MarkerSet SignMarkerSet = markerAPI.createMarkerSet("SIGN_MARKER_SET");
             //set the marker set label
             SignMarkerSet.setLabel("User created markers");
             String ID = generateMarkerID(l);
@@ -74,8 +79,8 @@ public class BlueMapApiHelper {
             System.out.println("removed marker " + ID);
 
             //save changes
-            saveMarkerAPI(api);
-        }));
+            saveMarkerAPI(markerAPI);
+        })));
     }
 
     public static String generateMarkerID(Location l){
@@ -83,15 +88,14 @@ public class BlueMapApiHelper {
         return Objects.requireNonNull(l.getWorld()).getName() + "_" + l.getX() + "-" + l.getY() + "-" + l.getZ();
     }
 
-    public static MarkerAPI getMarkerAPI(){
+    public static MarkerAPI getMarkerAPI(BlueMapAPI api){
         try {
-            return BlueMapAPI.getInstance().get().getMarkerAPI();
-        } catch (IOException ignored) {
-            return null;
+            return api.getMarkerAPI();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
-
-
 
     public static void saveMarkerAPI(MarkerAPI api){
         //Save the changes made to the API as long as the marker JSON is currently working.
