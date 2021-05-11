@@ -16,11 +16,12 @@ public class markerHandler {
             sendMessage(p,"You're missing the marker name! Please place the name of your marker on line 2!");
         }else if(Text[2].length() == 0){
             sendMessage(p,"Ok "+name+"! I'll make a marker with the default icon and a name of \"" + Text[1] + "\"");
+            //use overloaded method to create a marker with the default POI icon
             createMarkerPOI(Text[1], l);
 
         }else if(Text[3].length() == 0){
-            //TODO send location, name, and icon to API string 1 location icon
             sendMessage(p,"Ok "+name+"! I'll make a marker with the name of \""  + Text[1] + "\" and the icon \"" + Text[2] + "\"");
+            //create a marker with the provided icon
             createMarkerPOI(Text[1],l,Text[2]);
         }else{
             //TODO send location, name and icon

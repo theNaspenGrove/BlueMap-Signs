@@ -31,10 +31,9 @@ public class BlueMapApiHelper {
             SignMarkerSet.setLabel("User created markers");
             //generate 3d vector to create poiMarker
             Vector3d markerPos = Vector3d.from(l.getX(), l.getY(), l.getZ());
-            //generate a semi-unique marker id using the world name, location, and marker name.
-            //This is primarily so that I can reconstruct the id when the sign is removed.
-            //create the marker
+            //create the marker ID
             String ID = generateMarkerID(l);
+            //Create the marker Object
             POIMarker marker = SignMarkerSet.createPOIMarker(ID,map,markerPos);
             System.out.println("created marker " + ID);
             //set the marker label
@@ -51,6 +50,7 @@ public class BlueMapApiHelper {
         }));
     }
 
+    //Method overload for optional default POI icon
     public static void createMarkerPOI(String markerName, Location l){
         createMarkerPOI(markerName,l,"default");
     }

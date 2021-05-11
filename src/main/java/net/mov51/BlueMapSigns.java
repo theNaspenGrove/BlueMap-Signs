@@ -29,8 +29,9 @@ public final class BlueMapSigns extends JavaPlugin {
             }
         }
 
+        //Wait for the BlueMap API to enable and then make image Data
         BlueMapAPI.onEnable(api -> {
-            //code executed when the api got enabled
+            //Create and process icons
             makeData();
         });
 
