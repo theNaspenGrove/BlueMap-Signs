@@ -1,5 +1,6 @@
 package net.mov51;
 
+import de.bluecolored.bluemap.api.BlueMapAPI;
 import net.mov51.listeners.signBreakListener;
 import net.mov51.listeners.signChangeListener;
 import org.bukkit.plugin.Plugin;
@@ -27,7 +28,12 @@ public final class BlueMapSigns extends JavaPlugin {
                 System.out.println("Plugin data folder was unable to be created!");
             }
         }
-        makeData();
+
+        BlueMapAPI.onEnable(api -> {
+            //code executed when the api got enabled
+            makeData();
+        });
+
 
         getServer().getPluginManager().registerEvents(new signChangeListener(), this);
         getServer().getPluginManager().registerEvents(new signBreakListener(), this);

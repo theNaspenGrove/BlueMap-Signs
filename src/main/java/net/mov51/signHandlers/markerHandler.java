@@ -21,6 +21,7 @@ public class markerHandler {
         }else if(Text[3].length() == 0){
             //TODO send location, name, and icon to API string 1 location icon
             sendMessage(p,"Ok "+name+"! I'll make a marker with the name of \""  + Text[1] + "\" and the icon \"" + Text[2] + "\"");
+            createMarkerPOI(Text[1],l,Text[2]);
         }else{
             //TODO send location, name and icon
             //can't send map because I can't get the name of the map to the user easily

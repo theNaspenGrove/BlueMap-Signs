@@ -2,18 +2,21 @@ package net.mov51.helpers;
 
 import com.flowpowered.math.vector.Vector3d;
 import de.bluecolored.bluemap.api.BlueMapAPI;
+import de.bluecolored.bluemap.api.marker.Marker;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
 import de.bluecolored.bluemap.api.marker.POIMarker;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 public class BlueMapApiHelper {
 
-    public static void createMarkerPOI(String markerName, Location l){
+    public static void createMarkerPOI(String markerName, Location l,String icon){
         //get world to run loop om
         World world = l.getWorld();
 
@@ -36,10 +39,20 @@ public class BlueMapApiHelper {
             System.out.println("created marker " + ID);
             //set the marker label
             marker.setLabel(markerName);
+            if(iconHelper.icons.containsKey(icon)){
+
+                String iconPath = iconHelper.icons.get(icon);
+
+                marker.setIcon(iconPath,0,0);
+            }
             //save changes
             saveMarkerAPI(api);
 
         }));
+    }
+
+    public static void createMarkerPOI(String markerName, Location l){
+        createMarkerPOI(markerName,l,"default");
     }
 
     public static void removeMarkerPOI(Location l){
@@ -77,6 +90,8 @@ public class BlueMapApiHelper {
             return null;
         }
     }
+
+
 
     public static void saveMarkerAPI(MarkerAPI api){
         //Save the changes made to the API as long as the marker JSON is currently working.
