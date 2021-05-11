@@ -15,7 +15,6 @@ public class markerHandler {
             //TODO output help message with each line
             sendMessage(p,"You're missing the marker name! Please place the name of your marker on line 2!");
         }else if(Text[2].length() == 0){
-            //TODO send location and name to API string 1 and l
             sendMessage(p,"Ok "+name+"! I'll make a marker with the default icon and a name of \"" + Text[1] + "\"");
             createMarkerPOI(Text[1], l);
 
@@ -23,7 +22,9 @@ public class markerHandler {
             //TODO send location, name, and icon to API string 1 location icon
             sendMessage(p,"Ok "+name+"! I'll make a marker with the name of \""  + Text[1] + "\" and the icon \"" + Text[2] + "\"");
         }else{
-            //TODO send location, name, icon and map to API
+            //TODO send location, name and icon
+            //can't send map because I can't get the name of the map to the user easily
+            //map handling will have to be done automatically when the API exposes the map bounds
             sendMessage(p,"I don't really need 4 Lines, but thank you "+name+"! I'll make a marker with the name of \""  + Text[1] + "\" and the icon \"" + Text[2] + "\".");
             sendMessage(p,"Your message \"" + Text[3] + "\" meant a lot to me, so I'll get that marker done asap!");
         }

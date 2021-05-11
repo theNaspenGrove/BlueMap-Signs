@@ -24,9 +24,8 @@ public class signChangeListener implements Listener {
                 markSignParser(p,SignText,l);
                 break;
             case "[shape]":
-
+                    //TODO handle simple shapes
                 break;
-
             default:
                 break;
         }
