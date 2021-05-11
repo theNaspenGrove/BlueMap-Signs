@@ -2,7 +2,6 @@ package net.mov51.helpers;
 
 import com.flowpowered.math.vector.Vector3d;
 import de.bluecolored.bluemap.api.BlueMapAPI;
-import de.bluecolored.bluemap.api.BlueMapMap;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
 import de.bluecolored.bluemap.api.marker.POIMarker;
@@ -13,10 +12,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class BlueMapApiHelper {
-    //TODO Create marker with id of format
-    // "<username>-<numberIncrement>"
-
-    //TODO temp output sign information to console
 
     public static void createMarkerPOI(String markerName, Location l){
         //get world to run loop om
@@ -71,9 +66,8 @@ public class BlueMapApiHelper {
     }
 
     public static String generateMarkerID(Location l){
-        String ID = Objects.requireNonNull(l.getWorld()).getName() + "_" + l.getX() + "-" + l.getY() + "-" + l.getZ();
-        System.out.println("Generated marker ID " + ID);
-        return ID;
+        //Generate the marker ID with the exact location of the sign and the world it's in. Since there can only ever be one sign in that spot, there shouldn't be any confusion if I use the generated ID to remove the marker when the sign is broken.
+        return Objects.requireNonNull(l.getWorld()).getName() + "_" + l.getX() + "-" + l.getY() + "-" + l.getZ();
     }
 
     public static MarkerAPI getMarkerAPI(){
@@ -85,6 +79,7 @@ public class BlueMapApiHelper {
     }
 
     public static void saveMarkerAPI(MarkerAPI api){
+        //Save the changes made to the API as long as the marker JSON is currently working.
         try {
             api.save();
         } catch (IOException e) {
