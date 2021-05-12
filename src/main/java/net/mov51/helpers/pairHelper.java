@@ -2,8 +2,8 @@ package net.mov51.helpers;
 
 public class pairHelper<A, B> {
 
-        A first = null;
-        B second = null;
+        A first;
+        B second;
 
         pairHelper(A first, B second) {
             this.first = first;

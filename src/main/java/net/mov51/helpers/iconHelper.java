@@ -1,9 +1,6 @@
 package net.mov51.helpers;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import de.bluecolored.bluemap.api.BlueMapAPI;
-import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import net.mov51.BlueMapSigns;
 
 import javax.imageio.ImageIO;
@@ -12,11 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class iconHelper {
 
-    public static Map<String,pairHelper<String,BufferedImage>> icons = new HashMap<String,pairHelper<String,BufferedImage>>();
+    public static Map<String,pairHelper<String,BufferedImage>> icons = new HashMap<>();
 
     public static void makeData(){
         BlueMapAPI.getInstance().ifPresent(api -> {
@@ -35,16 +31,15 @@ public class iconHelper {
                             //select the first part of the array to get a clean name for the file
                             String cleanName = fileName[0];
                             //create the path String
-                            String path = null;
                             try {
                                 //Generate the Buffered image from the file
                                 BufferedImage image = ImageIO.read(file);
                                 //create the image and store it's path using the BlueMap api
-                                path = api.createImage(image,cleanName);
+                                String path = api.createImage(image,cleanName);
                                 //add the new icon to the map for verification later.
                                 icons.put(cleanName,new pairHelper<>(path,image));
 
-                                //todo add prefix to add output
+                                //TODO use console log handler
                                 System.out.println("added " + cleanName);
                             } catch (IOException e) {
                                 e.printStackTrace();

@@ -3,7 +3,6 @@ package net.mov51;
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import net.mov51.listeners.signBreakListener;
 import net.mov51.listeners.signChangeListener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;

@@ -20,6 +20,7 @@ public class signChangeListener implements Listener {
         Location l = e.getBlock().getLocation();
 
         switch (SignText[0].toLowerCase(Locale.ROOT)) {
+            //todo change to config value
             case "[mark]":
                 markSignParser(p,SignText,l);
                 break;
