@@ -7,19 +7,37 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+
+import static net.mov51.helpers.chatHelper.sendLogInfo;
+import static net.mov51.helpers.chatHelper.sendLogWarning;
 
 public class iconHelper {
 
     public static Map<String,pairHelper<String,BufferedImage>> icons = new HashMap<>();
+    public static String signMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
 
     public static void makeData(){
         BlueMapAPI.getInstance().ifPresent(api -> {
+
+            try {
+                api.getMarkerAPI().createMarkerSet(signMarkerSetID);
+                sendLogInfo("created markerSet " + signMarkerSetID);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
             //code executed when the api is enabled (skipped if the api is not enabled)
             File f = BlueMapSigns.plugin.getDataFolder();
+            Path fP = Paths.get(f.toPath() + "/icons");
+            File fF = fP.toFile();
 
-            File[] files = f.listFiles();
+
+            File[] files = fF.listFiles();
             if (files != null) {
                 for (File file : files) {
                     if (!file.isDirectory()) {
@@ -39,12 +57,15 @@ public class iconHelper {
                                 //add the new icon to the map for verification later.
                                 icons.put(cleanName,new pairHelper<>(path,image));
 
-                                //TODO use console log handler
-                                System.out.println("added " + cleanName);
+                                sendLogInfo("added icon " + cleanName);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                        }else{
+                            sendLogWarning("File " + file.getName() + " is not a png image!");
                         }
+                    }else{
+                        sendLogWarning("Directory " + file.getName() + " is not a file! Subdirectories are not currently searched!");
                     }
                 }
             }

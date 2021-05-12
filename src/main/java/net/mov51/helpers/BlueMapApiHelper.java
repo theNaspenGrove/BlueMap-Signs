@@ -5,13 +5,18 @@ import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
 import de.bluecolored.bluemap.api.marker.POIMarker;
+import net.mov51.BlueMapSigns;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+
 public class BlueMapApiHelper {
+
+    public static String signMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
+    public static String signMarkerSetName = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-name");
 
     public static void createMarkerPOI(String markerName, Location l,String icon){
         //get world to run loop om
@@ -24,11 +29,10 @@ public class BlueMapApiHelper {
             MarkerAPI markerAPI = getMarkerAPI(api);
             assert markerAPI != null;
             //create marker set
-            MarkerSet SignMarkerSet = markerAPI.createMarkerSet("SIGN_MARKER_SET");
-            //set the marker set label
-            SignMarkerSet.setLabel("User created markers");
-            //generate 3d vector to create poiMarker
-            Vector3d markerPos = Vector3d.from(l.getX(), l.getY(), l.getZ());
+            MarkerSet SignMarkerSet = markerAPI.getMarkerSet(signMarkerSetID).orElse(markerAPI.createMarkerSet(signMarkerSetID));
+            SignMarkerSet.setLabel(signMarkerSetName);
+            //generate 3d vector to create poiMarker and update location to be the center of the block
+            Vector3d markerPos = Vector3d.from(l.getX() + .5, l.getY() + .5, l.getZ() + .5);
             //create the marker ID
             String ID = generateMarkerID(l);
             //Create the marker Object
@@ -37,9 +41,7 @@ public class BlueMapApiHelper {
             //set the marker label
             marker.setLabel(markerName);
             if (iconHelper.icons.containsKey(icon)) {
-
                 pairHelper<String, BufferedImage> pair = iconHelper.icons.get(icon);
-
                 String iconPath = pair.getFirst();
                 BufferedImage image = pair.getSecond();
 
@@ -49,14 +51,13 @@ public class BlueMapApiHelper {
             }
             //save changes
             saveMarkerAPI(markerAPI);
-
         })));
     }
 
 
     //Method overload for optional default POI icon
     public static void createMarkerPOI(String markerName, Location l){
-        createMarkerPOI(markerName,l,"default");
+        createMarkerPOI(markerName,l,"");
     }
 
     public static void removeMarkerPOI(Location l) {
@@ -70,9 +71,9 @@ public class BlueMapApiHelper {
             MarkerAPI markerAPI = getMarkerAPI(api);
             assert markerAPI != null;
             //create marker set
-            MarkerSet SignMarkerSet = markerAPI.createMarkerSet("SIGN_MARKER_SET");
+            MarkerSet SignMarkerSet = markerAPI.getMarkerSet(signMarkerSetID).orElse(markerAPI.createMarkerSet(signMarkerSetID));
             //set the marker set label
-            SignMarkerSet.setLabel("User created markers");
+            SignMarkerSet.setLabel(signMarkerSetName);
             String ID = generateMarkerID(l);
             //remove the marker
             SignMarkerSet.removeMarker(ID);

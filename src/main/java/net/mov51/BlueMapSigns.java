@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
+import static net.mov51.helpers.chatHelper.sendLogWarning;
 import static net.mov51.helpers.iconHelper.makeData;
 
 public final class BlueMapSigns extends JavaPlugin {
@@ -18,13 +19,17 @@ public final class BlueMapSigns extends JavaPlugin {
         plugin = this;
 
         File data = plugin.getDataFolder();
+        String iconDataP = data + "/icons";
+        File iconDataF = new File(iconDataP);
 
-        if(!data.exists()){
-            boolean wasCreate = data.mkdirs();
+        plugin.saveDefaultConfig();
+
+        if(!iconDataF.exists()){
+            boolean wasCreate = iconDataF.mkdirs();
             if(wasCreate){
-                System.out.println("Plugin data folder has been created!");
+                sendLogWarning("Plugin data folder has been created!");
             }else{
-                System.out.println("Plugin data folder was unable to be created!");
+                sendLogWarning("Plugin data folder was unable to be created!");
             }
         }
 
