@@ -1,7 +1,10 @@
 package net.mov51.listeners;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,6 +21,17 @@ public class signBreakListener implements Listener {
         if (b.getState() instanceof Sign){
             Location l = b.getLocation();
             removeMarkerPOI(l);
+        }
+        indirectBreak(b);
+    }
+
+
+    private static void indirectBreak(Block b){
+        for (BlockFace f : BlockFace.values()) {
+            if (Tag.SIGNS.isTagged(b.getRelative(f).getType())) {
+                Location l = b.getRelative(f).getLocation();
+                removeMarkerPOI(l);
+            }
         }
     }
 }
