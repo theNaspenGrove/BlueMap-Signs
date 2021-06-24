@@ -26,4 +26,10 @@ public class chatHelper {
         logger.log(Level.WARNING, " " + message);
     }
 
+    public static void sendLogSevere(String message){
+        logger.log(Level.SEVERE, " ---BlueMapSigns Fatal Error---");
+        logger.log(Level.SEVERE, " " + message);
+        logger.log(Level.SEVERE, " ---BlueMapSigns Fatal Error---");
+    }
+
 }

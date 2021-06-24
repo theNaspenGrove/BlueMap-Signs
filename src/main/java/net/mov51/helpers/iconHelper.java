@@ -12,8 +12,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.mov51.helpers.chatHelper.sendLogInfo;
-import static net.mov51.helpers.chatHelper.sendLogWarning;
+import static net.mov51.helpers.chatHelper.*;
 
 public class iconHelper {
 
@@ -21,8 +20,7 @@ public class iconHelper {
     public static String signMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
 
     public static void makeData(){
-        BlueMapAPI.getInstance().ifPresent(api -> {
-
+        BlueMapAPI.getInstance().ifPresentOrElse(api -> {
             try {
                 api.getMarkerAPI().createMarkerSet(signMarkerSetID);
                 sendLogInfo("created markerSet " + signMarkerSetID);
@@ -69,6 +67,9 @@ public class iconHelper {
                     }
                 }
             }
+        }, () -> {
+            //If api is not present, please tell me 😭
+            sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
         });
     }
 

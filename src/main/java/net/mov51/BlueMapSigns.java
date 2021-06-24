@@ -34,11 +34,7 @@ public final class BlueMapSigns extends JavaPlugin {
         }
 
         //Wait for the BlueMap API to enable and then make image Data
-        BlueMapAPI.onEnable(api -> {
-            //Create and process icons
-            makeData();
-        });
-
+        BlueMapAPI.onEnable(api -> makeData());
 
         getServer().getPluginManager().registerEvents(new signChangeListener(), this);
         getServer().getPluginManager().registerEvents(new signBreakListener(), this);

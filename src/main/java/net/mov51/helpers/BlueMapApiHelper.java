@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
+import static net.mov51.helpers.chatHelper.sendLogSevere;
+
 public class BlueMapApiHelper {
 
     public static String signMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
@@ -24,7 +26,7 @@ public class BlueMapApiHelper {
 
         //loop through all maps on the given world and add a marker at the provided location.
         // Will perform a location check when that's opened in the API.
-        BlueMapAPI.getInstance().ifPresent(api -> api.getWorld(world != null ? world.getUID() : null).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
+        BlueMapAPI.getInstance().ifPresentOrElse(api -> api.getWorld(world != null ? world.getUID() : null).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
             //create marker api
             MarkerAPI markerAPI = getMarkerAPI(api);
             assert markerAPI != null;
@@ -51,7 +53,10 @@ public class BlueMapApiHelper {
             }
             //save changes
             saveMarkerAPI(markerAPI);
-        })));
+        })), () -> {
+            //If api is not present, please tell me 😭
+            sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
+        } );
     }
 
 
@@ -66,7 +71,7 @@ public class BlueMapApiHelper {
 
         //loop through all maps on the given world and add a marker at the provided location.
         // Will perform a location check when that's opened in the API.
-        BlueMapAPI.getInstance().ifPresent(api -> api.getWorld(world != null ? world.getUID() : null).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
+        BlueMapAPI.getInstance().ifPresentOrElse(api -> api.getWorld(world != null ? world.getUID() : null).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
             //create marker api
             MarkerAPI markerAPI = getMarkerAPI(api);
             assert markerAPI != null;
@@ -81,7 +86,10 @@ public class BlueMapApiHelper {
 
             //save changes
             saveMarkerAPI(markerAPI);
-        })));
+        })), () -> {
+            //If api is not present, please tell me 😭
+            sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
+        } );
     }
 
     public static String generateMarkerID(Location l){
