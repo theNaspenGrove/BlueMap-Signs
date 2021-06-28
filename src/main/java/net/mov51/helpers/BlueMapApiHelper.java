@@ -5,22 +5,22 @@ import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
 import de.bluecolored.bluemap.api.marker.POIMarker;
-import net.mov51.BlueMapSigns;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-import static net.mov51.helpers.chatHelper.sendLogSevere;
+import static net.mov51.helpers.chatHelper.*;
+import static net.mov51.markerHandlers.markerSetHandler.*;
 
 public class BlueMapApiHelper {
 
-    public static String signMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
-    public static String signMarkerSetName = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-name");
 
-    public static void createMarkerPOI(String markerName, Location l,String icon){
+
+    public static void createMarkerPOI(String markerName, Location l, String icon, String MarkerSetName, Player p){
         //get world to run loop om
         World world = l.getWorld();
 
@@ -29,40 +29,43 @@ public class BlueMapApiHelper {
         BlueMapAPI.getInstance().ifPresentOrElse(api -> api.getWorld(world != null ? world.getUID() : null).ifPresent(blueWorld -> blueWorld.getMaps().forEach(map -> {
             //create marker api
             MarkerAPI markerAPI = getMarkerAPI(api);
-            assert markerAPI != null;
-            //create marker set
-            MarkerSet SignMarkerSet = markerAPI.getMarkerSet(signMarkerSetID).orElse(markerAPI.createMarkerSet(signMarkerSetID));
-            SignMarkerSet.setLabel(signMarkerSetName);
-            //generate 3d vector to create poiMarker and update location to be the center of the block
-            Vector3d markerPos = Vector3d.from(l.getX() + .5, l.getY() + .5, l.getZ() + .5);
-            //create the marker ID
-            String ID = generateMarkerID(l);
-            //Create the marker Object
-            POIMarker marker = SignMarkerSet.createPOIMarker(ID, map, markerPos);
-            System.out.println("created marker " + ID);
-            //set the marker label
-            marker.setLabel(markerName);
-            if (iconHelper.icons.containsKey(icon)) {
-                pairHelper<String, BufferedImage> pair = iconHelper.icons.get(icon);
-                String iconPath = pair.getFirst();
-                BufferedImage image = pair.getSecond();
+            if (markerAPI != null) {
+                //get marker set
+                MarkerSet SignMarkerSet = getMarkerSetByName(markerAPI,MarkerSetName);
+                if(SignMarkerSet != null) {
+                    //generate 3d vector to create poiMarker and update location to be the center of the block
+                    Vector3d markerPos = Vector3d.from(l.getX() + .5, l.getY() + .5, l.getZ() + .5);
+                    //create the marker ID
+                    String ID = generateMarkerID(l);
+                    //Create the marker Object and set it's label
+                    POIMarker marker = SignMarkerSet.createPOIMarker(ID, map, markerPos);
+                    marker.setLabel(markerName);
+                    //todo change to info logger
+                    System.out.println("created marker " + ID);
+                    if (iconHelper.icons.containsKey(icon)) {
+                        pairHelper<String, BufferedImage> pair = iconHelper.icons.get(icon);
+                        String iconPath = pair.getFirst();
+                        BufferedImage image = pair.getSecond();
 
-                int x = image.getHeight() / 2;
-                int y = image.getWidth() / 2;
-                marker.setIcon(iconPath, x, y);
+                        int x = image.getHeight() / 2;
+                        int y = image.getWidth() / 2;
+                        marker.setIcon(iconPath, x, y);
+                    }
+                }else sendMessage(p,"That Marker Set doesn't exist!");
+                //save changes
+                saveMarkerAPI(markerAPI);
             }
-            //save changes
-            saveMarkerAPI(markerAPI);
         })), () -> {
             //If api is not present, please tell me 😭
+            //todo throw noAPI error
             sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
         } );
     }
 
 
     //Method overload for optional default POI icon
-    public static void createMarkerPOI(String markerName, Location l){
-        createMarkerPOI(markerName,l,"");
+    public static void createMarkerPOI(String markerName, Location l,Player p){
+        createMarkerPOI(markerName,l,"",defaultMarkerSetName,p);
     }
 
     public static void removeMarkerPOI(Location l) {
@@ -75,14 +78,25 @@ public class BlueMapApiHelper {
             //create marker api
             MarkerAPI markerAPI = getMarkerAPI(api);
             assert markerAPI != null;
-            //create marker set
-            MarkerSet SignMarkerSet = markerAPI.getMarkerSet(signMarkerSetID).orElse(markerAPI.createMarkerSet(signMarkerSetID));
-            //set the marker set label
-            SignMarkerSet.setLabel(signMarkerSetName);
             String ID = generateMarkerID(l);
             //remove the marker
-            SignMarkerSet.removeMarker(ID);
-            System.out.println("removed marker " + ID);
+
+            for (MarkerSet SingleSet : markerAPI.getMarkerSets()) {
+                String[] ArrayName = SingleSet.getId().split("_");
+                if(ArrayName.length > 0 && ArrayName[0].equals(signMarkerSetIDPrefix)){
+                    markerAPI.getMarkerSet(SingleSet.getId()).ifPresentOrElse(TheMarkerSet -> {
+                        if(TheMarkerSet.getMarker(ID).isPresent()){
+                            if(TheMarkerSet.removeMarker(ID)){
+                                sendLogInfo("Marker " + ID + " was safely removed");
+                            }else{
+                                sendLogWarning(new String[]{"Marker " + ID + " was unable to be removed!", "Tried to remove the marker from the " + TheMarkerSet.getLabel() + " marker set."});
+                            }
+                        }
+                    },() -> sendLogWarning("Marker set " + SingleSet.getId() + " didn't work"));
+                }else{
+                    sendLogInfo("Marker set " + SingleSet.getId() + " with ID prefix " + ArrayName[0] + " failed verification!");
+                }
+            }
 
             //save changes
             saveMarkerAPI(markerAPI);

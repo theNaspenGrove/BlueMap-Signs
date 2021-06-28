@@ -1,7 +1,6 @@
 package net.mov51.listeners;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

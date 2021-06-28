@@ -12,6 +12,14 @@ public class chatHelper {
     public static String chatPrefix = BlueMapSigns.plugin.getConfig().getString("chat-prefix");
     public static Logger logger = BlueMapSigns.plugin.getLogger();
 
+    public static void sendMessage(Player p, String[] messages){
+        String colorPrefix = ChatColor.translateAlternateColorCodes('&', chatPrefix);
+        for (String message : messages)
+        {
+            p.sendMessage(colorPrefix + " " + message);
+        }
+    }
+
     public static void sendMessage(Player p, String message){
         String colorPrefix = ChatColor.translateAlternateColorCodes('&', chatPrefix);
 
@@ -22,14 +30,33 @@ public class chatHelper {
         logger.log(Level.INFO, " " + message);
     }
 
+    public static void sendLogWarning(String[] message){
+        logger.log(Level.WARNING, " --BlueMapSigns Warning--");
+        for (String log : message)
+        {
+            logger.log(Level.WARNING, " " + log);
+        }
+        logger.log(Level.WARNING, " --BlueMapSigns Warning--");
+    }
+
     public static void sendLogWarning(String message){
-        logger.log(Level.WARNING, " " + message);
+        String[] oneLineWarning = new String[] {message};
+        sendLogWarning(oneLineWarning);
+    }
+
+
+    public static void sendLogSevere(String[] message){
+        logger.log(Level.SEVERE, " ---BlueMapSigns Fatal Error--");
+        for (String log : message)
+        {
+            logger.log(Level.SEVERE, " " + log);
+        }
+        logger.log(Level.SEVERE, " ---BlueMapSigns Fatal Error---");
     }
 
     public static void sendLogSevere(String message){
-        logger.log(Level.SEVERE, " ---BlueMapSigns Fatal Error---");
-        logger.log(Level.SEVERE, " " + message);
-        logger.log(Level.SEVERE, " ---BlueMapSigns Fatal Error---");
+        String[] oneLineSevere = new String[] {message};
+        sendLogSevere(oneLineSevere);
     }
 
 }

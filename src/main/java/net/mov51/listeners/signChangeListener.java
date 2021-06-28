@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
 import static net.mov51.helpers.chatHelper.sendMessage;
-import static net.mov51.signHandlers.markerHandler.markSignParser;
+import static net.mov51.markerHandlers.poiHandler.markSignParser;
 
 public class signChangeListener implements Listener {
 

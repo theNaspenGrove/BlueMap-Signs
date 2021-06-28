@@ -4,3 +4,6 @@ main: net.mov51.BlueMapSigns
 api-version: 1.16
 depend: [BlueMap]
 softdepend: [BlueMapAPI]
+commands:
+  BlueMap-Signs:
+    description: Manage the BlueMap Signs plugin
