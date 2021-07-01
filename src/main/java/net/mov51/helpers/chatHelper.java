@@ -4,6 +4,7 @@ import net.mov51.BlueMapSigns;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,4 +60,13 @@ public class chatHelper {
         sendLogSevere(oneLineSevere);
     }
 
+    public static String formatArray(ArrayList<String> array) {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < array.size(); i++) {
+            if(i != 0){
+                out.append(", ").append(array.get(i));
+            }else out.append(array.get(0));
+        }
+        return out.toString();
+    }
 }

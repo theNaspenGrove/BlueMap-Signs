@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class iconHelper {
         BlueMapAPI.getInstance().ifPresentOrElse(api -> {
             try {
                 api.getMarkerAPI().createMarkerSet(signMarkerSetID);
-                sendLogInfo("created markerSet " + signMarkerSetID);
+                sendLogInfo("created default markerSet " + signMarkerSetID);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -33,6 +34,7 @@ public class iconHelper {
             File f = BlueMapSigns.plugin.getDataFolder();
             Path fP = Paths.get(f.toPath() + "/icons");
             File fF = fP.toFile();
+            ArrayList<String> madeIcons = new ArrayList<String>();
 
 
             File[] files = fF.listFiles();
@@ -55,7 +57,7 @@ public class iconHelper {
                                 //add the new icon to the map for verification later.
                                 icons.put(cleanName,new pairHelper<>(path,image));
 
-                                sendLogInfo("added icon " + cleanName);
+                                madeIcons.add(cleanName);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -66,6 +68,7 @@ public class iconHelper {
                         sendLogWarning("Directory " + file.getName() + " is not a file! Subdirectories are not currently searched!");
                     }
                 }
+                sendLogInfo("Added icons " + formatArray(madeIcons));
             }
         }, () -> {
             //If api is not present, please tell me 😭
