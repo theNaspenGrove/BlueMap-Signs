@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import static net.mov51.helpers.chatHelper.sendMessage;
+import static net.mov51.helpers.tabCompleteHelper.whatCanRun;
 import static net.mov51.markerHandlers.markerSetHandler.*;
 
 public class commandHelper implements CommandExecutor {
@@ -44,7 +45,6 @@ public class commandHelper implements CommandExecutor {
                         }
                         return true;
                     case DeleteMarkerSetCommand:
-                        //todo delete marker set
                         if (hasPermission(p, DeleteMarkerSetPerm)) {
                             if (args.length == 2) {
                                 BlueMapAPI.getInstance().ifPresentOrElse(api -> {
@@ -60,7 +60,6 @@ public class commandHelper implements CommandExecutor {
                         }
                         return true;
                     case ListMarkerSetsCommand:
-                        //todo list markerSet
                         if (hasPermission(p, ListMarkerSetsPerm)) {
                             BlueMapAPI.getInstance().ifPresentOrElse(api ->
                                     sendMessage(p,"The current marker sets loaded by blueMap-Signs are " + listMarkerSets(api)), () -> {
@@ -69,12 +68,19 @@ public class commandHelper implements CommandExecutor {
                         }
                         return true;
                     default:
-                        //todo explain what can be do
-                        sendMessage(p, "You broke it!");
+                        boolean canRun = (hasPermission(p, CreateMarkerSetPerm) || hasPermission(p, DeleteMarkerSetPerm) || hasPermission(p, ListMarkerSetsPerm));
+                        if(canRun){
+
+                            String[] response = whatCanRun(p).toArray(new String[0]);
+                            sendMessage(p, "Please run one of these commands ");
+                            sendMessage(p, response);
+                        }
                         return true;
                 }
             } else {
-                sendMessage(p, "Please run /BlueMap-Signs help to for help!");
+                sendMessage(p, "Check out this wiki page on what this command can do!");
+                sendMessage(p, "https://github.com/theAspenGrove/BlueMap-Signs/wiki/Commands");
+
             }
         }
         return false;

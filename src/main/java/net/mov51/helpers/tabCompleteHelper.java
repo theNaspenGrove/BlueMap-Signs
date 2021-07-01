@@ -15,15 +15,19 @@ public class tabCompleteHelper implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String s, String[] strings) {
         if(command.getName().equals(mainCommand)){
-            List<String> l = new ArrayList<>();
             if(isPlayer(sender)) {
                 Player p = (Player) sender;
-                if (hasPermission(p, CreateMarkerSetPerm)) l.add(CreateMarkerSetCommand);
-                if (hasPermission(p, DeleteMarkerSetPerm)) l.add(DeleteMarkerSetCommand);
-                if (hasPermission(p, ListMarkerSetsPerm)) l.add(ListMarkerSetsCommand);
-                return l;
+                return whatCanRun(p);
             }
         }
         return null;
+    }
+
+    public static List<String> whatCanRun(Player p){
+        ArrayList<String> l = new ArrayList<>();
+        if (hasPermission(p, CreateMarkerSetPerm)) l.add(CreateMarkerSetCommand);
+        if (hasPermission(p, DeleteMarkerSetPerm)) l.add(DeleteMarkerSetCommand);
+        if (hasPermission(p, ListMarkerSetsPerm)) l.add(ListMarkerSetsCommand);
+        return l;
     }
 }
