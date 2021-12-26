@@ -1,4 +1,4 @@
-package net.mov51.helpers;
+package net.mov51.blueMapSigns.helpers;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import org.bukkit.command.Command;
@@ -6,9 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static net.mov51.helpers.chatHelper.sendMessage;
-import static net.mov51.helpers.tabCompleteHelper.whatCanRun;
-import static net.mov51.markerHandlers.markerSetHandler.*;
+import static net.mov51.blueMapSigns.helpers.chatHelper.sendMessage;
+import static net.mov51.blueMapSigns.helpers.tabCompleteHelper.whatCanRun;
+import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 
 public class commandHelper implements CommandExecutor {
 

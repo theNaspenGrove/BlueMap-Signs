@@ -1,17 +1,17 @@
-package net.mov51;
+package net.mov51.blueMapSigns;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
-import net.mov51.helpers.commandHelper;
-import net.mov51.helpers.tabCompleteHelper;
-import net.mov51.listeners.signBreakListener;
-import net.mov51.listeners.signChangeListener;
+import net.mov51.blueMapSigns.helpers.commandHelper;
+import net.mov51.blueMapSigns.helpers.tabCompleteHelper;
+import net.mov51.blueMapSigns.listeners.signBreakListener;
+import net.mov51.blueMapSigns.listeners.signChangeListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Objects;
 
-import static net.mov51.helpers.chatHelper.sendLogWarning;
-import static net.mov51.helpers.iconHelper.makeData;
+import static net.mov51.blueMapSigns.helpers.chatHelper.sendLogWarning;
+import static net.mov51.blueMapSigns.helpers.iconHelper.makeData;
 
 public final class BlueMapSigns extends JavaPlugin {
 

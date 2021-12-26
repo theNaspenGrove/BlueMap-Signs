@@ -1,6 +1,6 @@
-package net.mov51.helpers;
+package net.mov51.blueMapSigns.helpers;
 
-import net.mov51.BlueMapSigns;
+import net.mov51.blueMapSigns.BlueMapSigns;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

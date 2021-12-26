@@ -1,6 +1,6 @@
 name: BlueMap-Signs
 version: 1.3
-main: net.mov51.BlueMapSigns
+main: net.mov51.blueMapSigns.BlueMapSigns
 api-version: 1.16
 depend: [BlueMap]
 softdepend: [BlueMapAPI]

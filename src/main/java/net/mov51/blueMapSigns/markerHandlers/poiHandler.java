@@ -1,11 +1,11 @@
-package net.mov51.markerHandlers;
+package net.mov51.blueMapSigns.markerHandlers;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import static net.mov51.helpers.BlueMapApiHelper.createMarkerPOI;
-import static net.mov51.helpers.chatHelper.sendMessage;
-import static net.mov51.markerHandlers.markerSetHandler.defaultMarkerSetName;
+import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.createMarkerPOI;
+import static net.mov51.blueMapSigns.helpers.chatHelper.sendMessage;
+import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.defaultMarkerSetName;
 
 public class poiHandler {
     public static void markSignParser(Player p, String[] Text, Location l){

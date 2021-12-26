@@ -1,4 +1,4 @@
-package net.mov51.helpers;
+package net.mov51.blueMapSigns.helpers;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.mov51.BlueMapSigns.mainCommand;
-import static net.mov51.helpers.commandHelper.*;
+import static net.mov51.blueMapSigns.BlueMapSigns.mainCommand;
+import static net.mov51.blueMapSigns.helpers.commandHelper.*;
 
 public class tabCompleteHelper implements TabCompleter {
     @Override

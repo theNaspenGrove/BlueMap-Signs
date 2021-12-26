@@ -1,7 +1,7 @@
-package net.mov51.helpers;
+package net.mov51.blueMapSigns.helpers;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
-import net.mov51.BlueMapSigns;
+import net.mov51.blueMapSigns.BlueMapSigns;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.mov51.helpers.chatHelper.*;
+import static net.mov51.blueMapSigns.helpers.chatHelper.*;
 
 public class iconHelper {
 

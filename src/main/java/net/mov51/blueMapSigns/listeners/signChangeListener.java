@@ -1,6 +1,6 @@
-package net.mov51.listeners;
+package net.mov51.blueMapSigns.listeners;
 
-import net.mov51.BlueMapSigns;
+import net.mov51.blueMapSigns.BlueMapSigns;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,8 +8,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import static net.mov51.helpers.chatHelper.sendMessage;
-import static net.mov51.markerHandlers.poiHandler.markSignParser;
+import static net.mov51.blueMapSigns.helpers.chatHelper.sendMessage;
+import static net.mov51.blueMapSigns.markerHandlers.poiHandler.markSignParser;
 
 public class signChangeListener implements Listener {
 

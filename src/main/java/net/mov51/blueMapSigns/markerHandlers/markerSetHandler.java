@@ -1,17 +1,18 @@
-package net.mov51.markerHandlers;
+package net.mov51.blueMapSigns.markerHandlers;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
 import de.bluecolored.bluemap.api.marker.MarkerAPI;
 import de.bluecolored.bluemap.api.marker.MarkerSet;
-import net.mov51.BlueMapSigns;
+import net.mov51.blueMapSigns.BlueMapSigns;
 
-import static net.mov51.helpers.BlueMapApiHelper.getMarkerAPI;
-import static net.mov51.helpers.BlueMapApiHelper.saveMarkerAPI;
+import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.getMarkerAPI;
+import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.saveMarkerAPI;
 
 
 public class markerSetHandler {
 
     public static String defaultMarkerSetName = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-name");
+    public static String defaultMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
     public static String signMarkerSetIDPrefix = "bmSigns";
 
 

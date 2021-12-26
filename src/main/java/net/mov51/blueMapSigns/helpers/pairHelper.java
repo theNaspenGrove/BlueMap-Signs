@@ -1,4 +1,4 @@
-package net.mov51.helpers;
+package net.mov51.blueMapSigns.helpers;
 
 public class pairHelper<A, B> {
 

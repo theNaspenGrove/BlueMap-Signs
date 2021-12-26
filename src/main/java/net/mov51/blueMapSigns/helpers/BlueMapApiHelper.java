@@ -1,4 +1,4 @@
-package net.mov51.helpers;
+package net.mov51.blueMapSigns.helpers;
 
 import com.flowpowered.math.vector.Vector3d;
 import de.bluecolored.bluemap.api.BlueMapAPI;
@@ -13,8 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-import static net.mov51.helpers.chatHelper.*;
-import static net.mov51.markerHandlers.markerSetHandler.*;
+import static net.mov51.blueMapSigns.helpers.chatHelper.*;
+import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 
 public class BlueMapApiHelper {
 

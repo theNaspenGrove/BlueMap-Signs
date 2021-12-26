@@ -1,4 +1,4 @@
-package net.mov51.listeners;
+package net.mov51.blueMapSigns.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.Tag;
@@ -10,7 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import static net.mov51.helpers.BlueMapApiHelper.removeMarkerPOI;
+import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.removeMarkerPOI;
 
 public class signBreakListener implements Listener {
 
