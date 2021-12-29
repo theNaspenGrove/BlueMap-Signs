@@ -4,6 +4,27 @@ main: net.mov51.blueMapSigns.BlueMapSigns
 api-version: 1.16
 depend: [BlueMap]
 softdepend: [BlueMapAPI]
+
 commands:
   BlueMap-Signs:
     description: Manage the BlueMap Signs plugin
+  BlueMap-Sings CreateMarkerSet:
+    description: Create a marker set
+    permission: BlueMapSigns.CreateSet
+  BlueMap-Sings DeleteMarkerSet:
+    description: Delete a marker set
+    permission: BlueMapSigns.DeleteSet
+  BlueMap-Sings ListMarkerSets:
+    description: List marker sets loaded by BlueMap Signs
+    permission: BlueMapSigns.ListSets
+
+permissions:
+  BlueMapSigns.CreateSet:
+    description: Accsess to the base CreateMarkerSet subcommand
+    default: true
+  BlueMapSigns.DeleteSet:
+    description: Accsess to the base DeleteMarkerSet subcommand
+    default: true
+  BlueMapSigns.ListSets:
+    description: Accsess to the base ListMarkerSets subcommand
+    default: true
