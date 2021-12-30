@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.mov51.blueMapSigns.helpers.chatHelper.*;
+import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
 
 public class iconHelper {
 
@@ -24,7 +24,7 @@ public class iconHelper {
         BlueMapAPI.getInstance().ifPresentOrElse(api -> {
             try {
                 api.getMarkerAPI().createMarkerSet(signMarkerSetID);
-                sendLogInfo("created default markerSet " + signMarkerSetID);
+                aspenLogHelper.sendLogInfo("created default markerSet " + signMarkerSetID);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -62,18 +62,28 @@ public class iconHelper {
                                 e.printStackTrace();
                             }
                         }else{
-                            sendLogWarning("File " + file.getName() + " is not a png image!");
+                            aspenLogHelper.sendLogWarning("File " + file.getName() + " is not a png image!");
                         }
                     }else{
-                        sendLogWarning("Directory " + file.getName() + " is not a file! Subdirectories are not currently searched!");
+                        aspenLogHelper.sendLogWarning("Directory " + file.getName() + " is not a file! Subdirectories are not currently searched!");
                     }
                 }
-                sendLogInfo("Added icons " + formatArray(madeIcons));
+                aspenLogHelper.sendLogInfo("Added icons " + formatArray(madeIcons));
             }
         }, () -> {
             //If api is not present, please tell me 😭
-            sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
+            aspenLogHelper.sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
         });
+    }
+
+    public static String formatArray(ArrayList<String> array) {
+        StringBuilder out = new StringBuilder();
+        for (int i = 0; i < array.size(); i++) {
+            if(i != 0){
+                out.append(", ").append(array.get(i));
+            }else out.append(array.get(0));
+        }
+        return out.toString();
     }
 
 

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
-import static net.mov51.blueMapSigns.helpers.chatHelper.*;
+import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
 import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 
 public class BlueMapApiHelper {
@@ -59,7 +59,7 @@ public class BlueMapApiHelper {
         })), () -> {
             //If api is not present, please tell me 😭
             //todo throw noAPI error
-            sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
+            aspenLogHelper.sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
         } );
     }
 
@@ -88,14 +88,14 @@ public class BlueMapApiHelper {
                     markerAPI.getMarkerSet(SingleSet.getId()).ifPresentOrElse(TheMarkerSet -> {
                         if(TheMarkerSet.getMarker(ID).isPresent()){
                             if(TheMarkerSet.removeMarker(ID)){
-                                sendLogInfo("Marker " + ID + " was safely removed");
+                                aspenLogHelper.sendLogInfo("Marker " + ID + " was safely removed");
                             }else{
-                                sendLogWarning(new String[]{"Marker " + ID + " was unable to be removed!", "Tried to remove the marker from the " + TheMarkerSet.getLabel() + " marker set."});
+                                aspenLogHelper.sendLogWarning(new String[]{"Marker " + ID + " was unable to be removed!", "Tried to remove the marker from the " + TheMarkerSet.getLabel() + " marker set."});
                             }
                         }
-                    },() -> sendLogWarning("Marker set " + SingleSet.getId() + " didn't work"));
+                    },() -> aspenLogHelper.sendLogWarning("Marker set " + SingleSet.getId() + " didn't work"));
                 }else{
-                    sendLogInfo("Marker set " + SingleSet.getId() + " with ID prefix " + ArrayName[0] + " failed verification!");
+                    aspenLogHelper.sendLogInfo("Marker set " + SingleSet.getId() + " with ID prefix " + ArrayName[0] + " failed verification!");
                 }
             }
 
@@ -103,7 +103,7 @@ public class BlueMapApiHelper {
             saveMarkerAPI(markerAPI);
         })), () -> {
             //If api is not present, please tell me 😭
-            sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
+            aspenLogHelper.sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
         } );
     }
 

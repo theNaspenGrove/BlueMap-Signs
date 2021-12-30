@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
 import static net.mov51.blueMapSigns.helpers.tabCompleteHelper.whatCanRun;
@@ -24,7 +25,7 @@ public class commandHelper implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if(isPlayer(sender)) {
             Player p = (Player) sender;
             if (args.length != 0) {
