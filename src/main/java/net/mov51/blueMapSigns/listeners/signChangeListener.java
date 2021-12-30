@@ -8,7 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import static net.mov51.blueMapSigns.helpers.chatHelper.sendMessage;
+import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
 import static net.mov51.blueMapSigns.markerHandlers.poiHandler.markSignParser;
 
 public class signChangeListener implements Listener {
@@ -25,7 +25,7 @@ public class signChangeListener implements Listener {
             if(p.hasPermission("BlueMap-Signs.createPOI")){
                 markSignParser(p,SignText,l);
             }else{
-                sendMessage(p,"Sorry! You don't have permission to create a POI marker!");
+                aspenChatHelper.sendChat(p,"Sorry! You don't have permission to create a POI marker!");
             }
         }//else if(SignText[0].equalsIgnoreCase("[shape]")){
             //TODO implement shapes

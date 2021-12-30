@@ -5,6 +5,7 @@ import net.mov51.blueMapSigns.helpers.commandHelper;
 import net.mov51.blueMapSigns.helpers.tabCompleteHelper;
 import net.mov51.blueMapSigns.listeners.signBreakListener;
 import net.mov51.blueMapSigns.listeners.signChangeListener;
+import net.mov51.periderm.paper.AspenChatHelper;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -16,11 +17,14 @@ import static net.mov51.blueMapSigns.helpers.iconHelper.makeData;
 public final class BlueMapSigns extends JavaPlugin {
 
     public static org.bukkit.plugin.Plugin plugin = null;
+    public static AspenChatHelper aspenChatHelper;
     public static String mainCommand = "BlueMap-Signs";
 
     @Override
     public void onEnable() {
         plugin = this;
+
+
 
         File data = plugin.getDataFolder();
         String iconDataP = data + "/icons";
@@ -45,6 +49,9 @@ public final class BlueMapSigns extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new signChangeListener(), this);
         getServer().getPluginManager().registerEvents(new signBreakListener(), this);
+
+        String ConfigChatPrefix = BlueMapSigns.plugin.getConfig().getString("chat-prefix");
+        aspenChatHelper = new AspenChatHelper((ConfigChatPrefix != null) ? ConfigChatPrefix : "BlueMap-Signs");
     }
 
     @Override

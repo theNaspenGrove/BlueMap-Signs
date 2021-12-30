@@ -1,8 +1,6 @@
 package net.mov51.blueMapSigns.helpers;
 
 import net.mov51.blueMapSigns.BlueMapSigns;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -10,22 +8,7 @@ import java.util.logging.Logger;
 
 public class chatHelper {
 
-    public static String chatPrefix = BlueMapSigns.plugin.getConfig().getString("chat-prefix");
     public static Logger logger = BlueMapSigns.plugin.getLogger();
-
-    public static void sendMessage(Player p, String[] messages){
-        String colorPrefix = ChatColor.translateAlternateColorCodes('&', chatPrefix);
-        for (String message : messages)
-        {
-            p.sendMessage(colorPrefix + " " + message);
-        }
-    }
-
-    public static void sendMessage(Player p, String message){
-        String colorPrefix = ChatColor.translateAlternateColorCodes('&', chatPrefix);
-
-        p.sendMessage(colorPrefix + " " + message);
-    }
 
     public static void sendLogInfo(String message){
         logger.log(Level.INFO, " " + message);

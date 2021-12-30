@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
+import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
 import static net.mov51.blueMapSigns.helpers.chatHelper.*;
 import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 
@@ -51,7 +52,7 @@ public class BlueMapApiHelper {
                         int y = image.getWidth() / 2;
                         marker.setIcon(iconPath, x, y);
                     }
-                }else sendMessage(p,"That Marker Set doesn't exist!");
+                }else aspenChatHelper.sendChat(p,"That Marker Set doesn't exist!");
                 //save changes
                 saveMarkerAPI(markerAPI);
             }

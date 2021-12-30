@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static net.mov51.blueMapSigns.helpers.chatHelper.sendMessage;
+import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
 import static net.mov51.blueMapSigns.helpers.tabCompleteHelper.whatCanRun;
 import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 
@@ -34,9 +34,9 @@ public class commandHelper implements CommandExecutor {
                             if (args.length == 2) {
                                 BlueMapAPI.getInstance().ifPresentOrElse(api -> {
                                     if (createMarkerSetByName(api, args[1])) {
-                                        sendMessage(p, "Marker set " + args[1] + " created!");
+                                        aspenChatHelper.sendChat(p, "Marker set " + args[1] + " created!");
                                     } else {
-                                        sendMessage(p, "Marker set " + args[1] + " already existed!");
+                                        aspenChatHelper.sendChat(p, "Marker set " + args[1] + " already existed!");
                                     }
                                 }, () -> {
                                     //todo throw noAPI error
@@ -49,9 +49,9 @@ public class commandHelper implements CommandExecutor {
                             if (args.length == 2) {
                                 BlueMapAPI.getInstance().ifPresentOrElse(api -> {
                                     if (deleteMarkerSetByName(api, args[1])) {
-                                        sendMessage(p, "Marker set " + args[1] + " has been removed!");
+                                        aspenChatHelper.sendChat(p, "Marker set " + args[1] + " has been removed!");
                                     } else {
-                                        sendMessage(p, "Marker set " + args[1] + " doesn't exist!");
+                                        aspenChatHelper.sendChat(p, "Marker set " + args[1] + " doesn't exist!");
                                     }
                                 }, () -> {
                                     //todo throw noAPI error
@@ -62,7 +62,7 @@ public class commandHelper implements CommandExecutor {
                     case ListMarkerSetsCommand:
                         if (hasPermission(p, ListMarkerSetsPerm)) {
                             BlueMapAPI.getInstance().ifPresentOrElse(api ->
-                                    sendMessage(p,"The current marker sets loaded by blueMap-Signs are " + listMarkerSets(api)), () -> {
+                                    aspenChatHelper.sendChat(p,"The current marker sets loaded by blueMap-Signs are " + listMarkerSets(api)), () -> {
                                 //todo throw noAPI error
                             });
                         }
@@ -72,14 +72,14 @@ public class commandHelper implements CommandExecutor {
                         if(canRun){
 
                             String[] response = whatCanRun(p).toArray(new String[0]);
-                            sendMessage(p, "Please run one of these commands ");
-                            sendMessage(p, response);
+                            aspenChatHelper.sendChat(p, "Please run one of these commands ");
+                            aspenChatHelper.sendChat(p, response);
                         }
                         return true;
                 }
             } else {
-                sendMessage(p, "Check out this wiki page on what this command can do!");
-                sendMessage(p, "https://github.com/theAspenGrove/BlueMap-Signs/wiki/Commands");
+                aspenChatHelper.sendChat(p, "Check out this wiki page on what this command can do!");
+                aspenChatHelper.sendChat(p, "https://github.com/theAspenGrove/BlueMap-Signs/wiki/Commands");
 
             }
         }
