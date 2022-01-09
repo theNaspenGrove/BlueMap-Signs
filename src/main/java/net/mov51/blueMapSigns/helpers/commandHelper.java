@@ -34,7 +34,7 @@ public class commandHelper implements CommandExecutor {
                         if (hasPermission(p, CreateMarkerSetPerm)) {
                             if (args.length == 2) {
                                 BlueMapAPI.getInstance().ifPresentOrElse(api -> {
-                                    if (createMarkerSetByName(api, args[1])) {
+                                    if (createMarkerSet(api, args[1])) {
                                         aspenChatHelper.sendChat(p, "Marker set " + args[1] + " created!");
                                     } else {
                                         aspenChatHelper.sendChat(p, "Marker set " + args[1] + " already existed!");
@@ -49,7 +49,7 @@ public class commandHelper implements CommandExecutor {
                         if (hasPermission(p, DeleteMarkerSetPerm)) {
                             if (args.length == 2) {
                                 BlueMapAPI.getInstance().ifPresentOrElse(api -> {
-                                    if (deleteMarkerSetByName(api, args[1])) {
+                                    if (deleteMarkerSet(api, args[1])) {
                                         aspenChatHelper.sendChat(p, "Marker set " + args[1] + " has been removed!");
                                     } else {
                                         aspenChatHelper.sendChat(p, "Marker set " + args[1] + " doesn't exist!");

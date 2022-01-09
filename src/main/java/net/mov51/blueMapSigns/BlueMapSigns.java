@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import static net.mov51.blueMapSigns.helpers.iconHelper.makeData;
+import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.loadAllMarkerSets;
 
 public final class BlueMapSigns extends JavaPlugin {
 
@@ -51,8 +52,13 @@ public final class BlueMapSigns extends JavaPlugin {
             }
         }
 
-        //Wait for the BlueMap API to enable and then make image Data
-        BlueMapAPI.onEnable(api -> makeData());
+        //Wait for the BlueMap API to enable
+        BlueMapAPI.onEnable(api -> {
+            //make image Data
+            makeData();
+            //load marker sets currently controlled by BlueMap signs
+            loadAllMarkerSets(api);
+        });
 
         getServer().getPluginManager().registerEvents(new signChangeListener(), this);
         getServer().getPluginManager().registerEvents(new signBreakListener(), this);

@@ -18,18 +18,9 @@ import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
 public class iconHelper {
 
     public static Map<String,pairHelper<String,BufferedImage>> icons = new HashMap<>();
-    public static String signMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
 
     public static void makeData(){
         BlueMapAPI.getInstance().ifPresentOrElse(api -> {
-            try {
-                api.getMarkerAPI().createMarkerSet(signMarkerSetID);
-                aspenLogHelper.sendLogInfo("created default markerSet " + signMarkerSetID);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
             //code executed when the api is enabled (skipped if the api is not enabled)
             File f = BlueMapSigns.plugin.getDataFolder();
             Path fP = Paths.get(f.toPath() + "/icons");

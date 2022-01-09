@@ -1,4 +1,4 @@
 sign-prefix: "[mark]"
 chat-prefix: "&a&l[&9Blue-Signs&a&l]&r"
-sign-marker-set-ID: "SIGN-MARKER-SET"
-sign-marker-set-name: "User created markers"
+default-sign-marker-set-ID: "SIGN-MARKER-SET"
+default-sign-marker-set-name: "User created markers"
