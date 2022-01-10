@@ -34,28 +34,34 @@ public class BlueMapApiHelper {
             MarkerAPI markerAPI = getMarkerAPI(api);
             if (markerAPI != null) {
                 //get marker set
-                MarkerSet SignMarkerSet = getMarkerSetFromName(MarkerSetName).getSet();
-                if(SignMarkerSet != null) {
-                    //generate 3d vector to create poiMarker and update location to be the center of the block
-                    Vector3d markerPos = Vector3d.from(l.getX() + .5, l.getY() + .5, l.getZ() + .5);
-                    //create the marker ID
-                    String ID = generateMarkerID(l);
-                    //Create the marker Object and set its label
-                    POIMarker marker = SignMarkerSet.createPOIMarker(ID, map, markerPos);
-                    marker.setLabel(markerName);
-                    aspenLogHelper.sendLogInfo("created marker " + ID);
-                    if (iconHelper.icons.containsKey(icon)) {
-                        pairHelper<String, BufferedImage> pair = iconHelper.icons.get(icon);
-                        String iconPath = pair.getFirst();
-                        BufferedImage image = pair.getSecond();
+                AspenMarkerSet AspenSignMarkerSet = getMarkerSetFromName(MarkerSetName);
+                if (AspenSignMarkerSet != null) {
+                    MarkerSet SignMarkerSet = AspenSignMarkerSet.getSet(markerAPI);
+                    if (SignMarkerSet != null) {
+                        //generate 3d vector to create poiMarker and update location to be the center of the block
+                        Vector3d markerPos = Vector3d.from(l.getX() + .5, l.getY() + .5, l.getZ() + .5);
+                        //create the marker ID
+                        String ID = generateMarkerID(l);
+                        //Create the marker Object and set its label
+                        POIMarker marker = SignMarkerSet.createPOIMarker(ID, map, markerPos);
+                        marker.setLabel(markerName);
+                        aspenLogHelper.sendLogInfo("created marker " + ID);
+                        if (iconHelper.icons.containsKey(icon)) {
+                            pairHelper<String, BufferedImage> pair = iconHelper.icons.get(icon);
+                            String iconPath = pair.getFirst();
+                            BufferedImage image = pair.getSecond();
 
-                        int x = image.getHeight() / 2;
-                        int y = image.getWidth() / 2;
-                        marker.setIcon(iconPath, x, y);
+                            int x = image.getHeight() / 2;
+                            int y = image.getWidth() / 2;
+                            marker.setIcon(iconPath, x, y);
+                        }
+                    } else {
+                        aspenChatHelper.sendChat(p, "That Marker Set doesn't exist!");
+                        aspenLogHelper.sendLogWarning("Marker Set " + MarkerSetName + " doesn't exist!");
                     }
-                }else {
-                    aspenChatHelper.sendChat(p,"That Marker Set doesn't exist!");
-                    aspenLogHelper.sendLogWarning("Marker Set " + MarkerSetName + " doesn't exist!");
+                } else {
+                    aspenChatHelper.sendChat(p, "That Marker Set doesn't exist!");
+                    aspenLogHelper.sendLogWarning("Aspen Marker Set Object " + MarkerSetName + " doesn't exist!");
                 }
                 //save changes
                 saveMarkerAPI(markerAPI);

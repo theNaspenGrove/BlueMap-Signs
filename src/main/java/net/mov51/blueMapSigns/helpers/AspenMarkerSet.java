@@ -26,7 +26,7 @@ public class AspenMarkerSet {
     public AspenMarkerSet(BlueMapAPI api, String markerSetID, String markerSetName){
         //set object variables
         blueAPI = api;
-        this.markerSetID = markerSetID!=null ? signMarkerSetIDPrefix + "_" + markerSetID : signMarkerSetIDPrefix + "_" + markerSetNameToID(markerSetName);
+        this.markerSetID = markerSetID!=null ? prefixSetID(markerSetID) : prefixSetID(markerSetNameToID(defaultMarkerSetName));
         this.markerSetName = markerSetName!=null ? markerSetName : defaultMarkerSetName;
         //get MarkerAPI
         MarkerAPI markerAPI = getMarkerAPI(blueAPI);
@@ -34,7 +34,7 @@ public class AspenMarkerSet {
         if(setExists(markerAPI,this)){
             aspenLogHelper.sendLogWarning("MarkerSet " + this.getSetID() + " already exists!");
         }else{
-            set = markerAPI.createMarkerSet(signMarkerSetIDPrefix + "_" +  this.getSetID());
+            set = markerAPI.createMarkerSet(this.getPrefixedSetID());
             set.setLabel(this.getSetName());
         }
         saveMarkerAPI(markerAPI);
@@ -46,13 +46,13 @@ public class AspenMarkerSet {
         BlueMapAPI.getInstance().ifPresent(api -> {
             //set object variables
             blueAPI = api;
-            this.markerSetID = markerSetID!=null ? signMarkerSetIDPrefix + "_" +  markerSetID : signMarkerSetIDPrefix + "_" + defaultMarkerSetID;
+            this.markerSetID = markerSetID!=null ? prefixSetID(markerSetID) : prefixSetID(defaultMarkerSetID);
             this.markerSetName = markerSetName!=null ? markerSetName : defaultMarkerSetName;
             //get MarkerAPI
             MarkerAPI markerAPI = getMarkerAPI(blueAPI);
             //create MarkerSet
             if(setExists(markerAPI,this)){
-                markerAPI.createMarkerSet(signMarkerSetIDPrefix + "_" + this.getSetID()).setLabel(this.getSetName());
+                markerAPI.createMarkerSet(this.getPrefixedSetID()).setLabel(this.getSetName());
                 aspenLogHelper.sendLogWarning("MarkerSet " + this.getSetID() + " already exists!");
             }
             saveMarkerAPI(markerAPI);
@@ -74,15 +74,23 @@ public class AspenMarkerSet {
 
     public String getSetID(){
         if(!markerSetID.isEmpty()){
-            return defaultMarkerSetID;
-        }else{
             return markerSetID;
+        }else{
+            return defaultMarkerSetID;
         }
     }
 
-    public MarkerSet getSet(){
-        MarkerAPI markerAPI = getMarkerAPI(blueAPI);
-        saveMarkerAPI(markerAPI);
-        return markerAPI.getMarkerSet(getSetID()).orElse(null);
+    public String getPrefixedSetID(){
+        if(!markerSetID.isEmpty()){
+            System.out.println("Get prefixed is not empty " + markerSetID);
+            return prefixSetID(markerSetID);
+        }else{
+            System.out.println("Get prefixed is empty " + markerSetID);
+            return prefixSetID(defaultMarkerSetID);
+        }
+    }
+
+    public MarkerSet getSet(MarkerAPI markerAPI){
+        return markerAPI.getMarkerSet(this.getPrefixedSetID()).orElse(null);
     }
 }

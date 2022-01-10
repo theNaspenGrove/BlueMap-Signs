@@ -18,24 +18,13 @@ public class markerSetHandler {
 
     public static List<AspenMarkerSet> AspenMarkerSets =new ArrayList<>();
 
-    private static AspenMarkerSet defaultSet;
-
-    public static AspenMarkerSet getMarkerSet(String markerSetID){
-        for (AspenMarkerSet aspenMarkerSet : AspenMarkerSets) {
-            if(aspenMarkerSet.markerSetID.equalsIgnoreCase(markerSetID)){
-                return aspenMarkerSet;
-            }
-        }
-        return defaultSet;
-    }
-
     public static AspenMarkerSet getMarkerSetFromName(String markerSetName){
         for (AspenMarkerSet aspenMarkerSet : AspenMarkerSets) {
             if(aspenMarkerSet.markerSetName.equalsIgnoreCase(markerSetName)){
                 return aspenMarkerSet;
             }
         }
-        return defaultSet;
+        return null;
     }
 
     public static boolean setExists(MarkerAPI markerAPI, AspenMarkerSet set){
@@ -117,6 +106,10 @@ public class markerSetHandler {
 
     //These are non-API helper methods
     public static String markerSetNameToID(String MarkerSetName){
-        return signMarkerSetIDPrefix + "_" + MarkerSetName.replaceAll(" ", "_").toUpperCase();
+        return signMarkerSetIDPrefix + "_" + MarkerSetName.replaceAll(" ", "-").toUpperCase();
+    }
+
+    public static String prefixSetID(String MarkerSetID){
+        return signMarkerSetIDPrefix + "_" + MarkerSetID;
     }
 }
