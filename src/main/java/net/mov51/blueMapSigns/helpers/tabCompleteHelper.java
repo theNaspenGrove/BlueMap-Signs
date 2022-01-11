@@ -14,7 +14,7 @@ import static net.mov51.blueMapSigns.helpers.commandHelper.*;
 
 public class tabCompleteHelper implements TabCompleter {
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, Command command, String s, String[] strings) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String s, String[] strings) {
         if(command.getName().equals(mainCommand)){
             if(isPlayer(sender)) {
                 Player p = (Player) sender;
