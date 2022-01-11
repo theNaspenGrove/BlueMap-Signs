@@ -49,8 +49,6 @@ public class markerSetHandler {
 
     public static void createMarkerSet(BlueMapAPI api, String MarkerSetID, String MarkerSetName){
         new AspenMarkerSet(api, MarkerSetID, MarkerSetName);
-        MarkerAPI markerAPI = getMarkerAPI(api);
-        saveMarkerAPI(markerAPI);
     }
 
     private static void createDefaultMarkerSet(BlueMapAPI api){
