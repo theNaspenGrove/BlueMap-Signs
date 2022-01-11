@@ -12,8 +12,8 @@ import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 
 public class AspenMarkerSet {
     public static final String signMarkerSetIDPrefix = "bmSigns";
-    public static String defaultMarkerSetName = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-name");
-    public static String defaultMarkerSetID = BlueMapSigns.plugin.getConfig().getString("sign-marker-set-ID");
+    public static String defaultMarkerSetID = BlueMapSigns.plugin.getConfig().getString("default-sign-marker-set-ID");
+    public static String defaultMarkerSetName = BlueMapSigns.plugin.getConfig().getString("default-sign-marker-set-name");
 
     BlueMapAPI blueAPI;
 
@@ -26,7 +26,7 @@ public class AspenMarkerSet {
     public AspenMarkerSet(BlueMapAPI api, String markerSetID, String markerSetName){
         //set object variables
         blueAPI = api;
-        this.markerSetID = markerSetID!=null ? prefixSetID(markerSetID) : prefixSetID(markerSetNameToID(defaultMarkerSetName));
+        this.markerSetID = markerSetID!=null ? markerSetID : markerSetNameToID(defaultMarkerSetName);
         this.markerSetName = markerSetName!=null ? markerSetName : defaultMarkerSetName;
         //get MarkerAPI
         MarkerAPI markerAPI = getMarkerAPI(blueAPI);
@@ -46,7 +46,7 @@ public class AspenMarkerSet {
         BlueMapAPI.getInstance().ifPresent(api -> {
             //set object variables
             blueAPI = api;
-            this.markerSetID = markerSetID!=null ? prefixSetID(markerSetID) : prefixSetID(defaultMarkerSetID);
+            this.markerSetID = markerSetID!=null ? markerSetID : defaultMarkerSetID;
             this.markerSetName = markerSetName!=null ? markerSetName : defaultMarkerSetName;
             //get MarkerAPI
             MarkerAPI markerAPI = getMarkerAPI(blueAPI);
@@ -82,10 +82,8 @@ public class AspenMarkerSet {
 
     public String getPrefixedSetID(){
         if(!markerSetID.isEmpty()){
-            System.out.println("Get prefixed is not empty " + markerSetID);
             return prefixSetID(markerSetID);
         }else{
-            System.out.println("Get prefixed is empty " + markerSetID);
             return prefixSetID(defaultMarkerSetID);
         }
     }
