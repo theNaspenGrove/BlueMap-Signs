@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
+import static net.mov51.periderm.paper.logs.Strings.formatArray;
 
 public class iconHelper {
 
@@ -72,17 +73,5 @@ public class iconHelper {
             aspenLogHelper.sendLogSevere("BlueMap API not present! Trying to initialize Icons in IconHelper!");
         });
     }
-
-    public static String formatArray(ArrayList<String> array) {
-        StringBuilder out = new StringBuilder();
-        for (int i = 0; i < array.size(); i++) {
-            if(i != 0){
-                out.append(", ").append(array.get(i));
-            }else out.append(array.get(0));
-        }
-        return out.toString();
-    }
-
-
 
 }

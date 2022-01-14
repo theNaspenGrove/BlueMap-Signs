@@ -23,7 +23,7 @@ public class AspenMarkerSet {
 
     public AspenMarkerSet(BlueMapAPI api, String markerSetID, String markerSetName){
         //set object variables
-        this.MarkerSetID = markerSetID!=null ? markerSetID : markerSetNameToID(markerSetName);
+        this.MarkerSetID = markerSetID;
         this.MarkerSetName = markerSetName;
         //Start Initialize
         initialize(api);

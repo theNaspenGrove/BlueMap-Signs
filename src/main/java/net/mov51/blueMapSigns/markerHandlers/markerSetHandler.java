@@ -12,6 +12,7 @@ import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
 import static net.mov51.blueMapSigns.helpers.AspenMarkerSet.*;
 import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.getMarkerAPI;
 import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.saveMarkerAPI;
+import static net.mov51.periderm.paper.logs.Strings.formatArray;
 
 
 public class markerSetHandler {
@@ -53,7 +54,7 @@ public class markerSetHandler {
 
     private static void createDefaultMarkerSet(BlueMapAPI api){
         MarkerAPI markerAPI = getMarkerAPI(api);
-        if(!setExists(markerAPI, DefaultMarkerSetID)){
+        if(!setExists(markerAPI, prefixSetID(DefaultMarkerSetID))){
             aspenLogHelper.sendLogInfo("created default MarkerSet!");
             createMarkerSet(api, DefaultMarkerSetID, DefaultMarkerSetName);
         }
@@ -89,16 +90,14 @@ public class markerSetHandler {
         saveMarkerAPI(markerAPI);
     }
 
-    public static String listMarkerSets(BlueMapAPI api){
-        MarkerAPI markerAPI = getMarkerAPI(api);
-        StringBuilder markerSetList = new StringBuilder();
+    public static String listMarkerSets(){
+        ArrayList<String> markerSets = new ArrayList<>();
 
-        for (MarkerSet SingleSet : markerAPI.getMarkerSets()) {
-            if(isPrefixedID(SingleSet.getId())) {
-                markerSetList.insert(0, SingleSet.getLabel());
-            }
+        for (AspenMarkerSet aspenMarkerSet : AspenMarkerSets) {
+            markerSets.add(aspenMarkerSet.MarkerSetName);
         }
-        return markerSetList.toString();
+
+        return formatArray(markerSets);
     }
 
     //These are non-API helper methods
