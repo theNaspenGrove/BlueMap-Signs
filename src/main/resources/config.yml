@@ -1,4 +1,12 @@
+#The first line used to create a marker sign
 sign-prefix: "[mark]"
-chat-prefix: "&9Blue-Signs&r"
+
+#Use the adventure RGB format or the standard vanilla color set to color/format the prefix
+#RGB example: &#RRGGBB
+chat-prefix: "&6&l[&r&9Blue-Signs&r&6&l]&r"
+
+#This marker set will be automatically created by the plugin and must exist for it to function
+#The ID is how BlueMap tracks the Marker Set in markers.json
 default-sign-marker-set-ID: "SIGN-MARKER-SET"
+#The name is how the Marker Set will appear on your map
 default-sign-marker-set-name: "User created markers"
