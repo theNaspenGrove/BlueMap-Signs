@@ -20,7 +20,7 @@ public class markerSetHandler {
 
     public static AspenMarkerSet getMarkerSetFromName(String markerSetName){
         for (AspenMarkerSet aspenMarkerSet : AspenMarkerSets) {
-            if(aspenMarkerSet.markerSetName.equalsIgnoreCase(markerSetName)){
+            if(aspenMarkerSet.getSetName().equalsIgnoreCase(markerSetName)){
                 return aspenMarkerSet;
             }
         }
@@ -28,16 +28,16 @@ public class markerSetHandler {
     }
 
     public static boolean setExists(MarkerAPI markerAPI, AspenMarkerSet set){
-        return markerAPI.getMarkerSet(set.getSetID()).isPresent();
+        return markerAPI.getMarkerSet(set.getPrefixedSetID()).isPresent();
     }
 
     public static boolean setExists(MarkerAPI markerAPI, String ID){
-        return markerAPI.getMarkerSet(signMarkerSetIDPrefix + "_" +ID).isPresent();
+        return markerAPI.getMarkerSet(ID).isPresent();
     }
 
     //These methods use the BlueMap API to generate their own MarkerAPI and save it. They are self-contained and can be called safely without having to save the api.
     public static boolean createMarkerSet(BlueMapAPI api, String MarkerSetName){
-        AspenMarkerSet set = new AspenMarkerSet(api, null, MarkerSetName);
+        AspenMarkerSet set = new AspenMarkerSet(api, MarkerSetName);
         MarkerAPI markerAPI = getMarkerAPI(api);
         if(setExists(markerAPI,set)){
             saveMarkerAPI(markerAPI);
@@ -53,21 +53,26 @@ public class markerSetHandler {
 
     private static void createDefaultMarkerSet(BlueMapAPI api){
         MarkerAPI markerAPI = getMarkerAPI(api);
-        if(!setExists(markerAPI,defaultMarkerSetID)){
+        if(!setExists(markerAPI, DefaultMarkerSetID)){
             aspenLogHelper.sendLogInfo("created default MarkerSet!");
-            createMarkerSet(api,defaultMarkerSetID,defaultMarkerSetName);
+            createMarkerSet(api, DefaultMarkerSetID, DefaultMarkerSetName);
         }
         saveMarkerAPI(markerAPI);
     }
 
-    public static boolean deleteMarkerSet(BlueMapAPI api, String MarkerSetName){
-        //todo delete markerset
-        AspenMarkerSet set = new AspenMarkerSet(api, null, MarkerSetName);
+    public static boolean deleteMarkerSet(BlueMapAPI api, AspenMarkerSet set){
+        //todo delete MarkerSet
         MarkerAPI markerAPI = getMarkerAPI(api);
-        if(setExists(markerAPI,set)){
-            saveMarkerAPI(markerAPI);
-            return true;
+        if(setExists(markerAPI, set.getPrefixedSetID())){
+            if(markerAPI.removeMarkerSet(set.getPrefixedSetID())){
+                AspenMarkerSets.remove(set);
+                saveMarkerAPI(markerAPI);
+                return true;
+            }
+        }else{
+            aspenLogHelper.sendLogWarning("Marker set with Full ID '" + set.getPrefixedSetID() + "' was not loaded in BlueMap!");
         }
+        aspenLogHelper.sendLogWarning("Could not remove MarkerSet with Full ID '" + set.getPrefixedSetID() + "'");
         saveMarkerAPI(markerAPI);
         return false;
     }
@@ -76,11 +81,9 @@ public class markerSetHandler {
         createDefaultMarkerSet(api);
         MarkerAPI markerAPI = getMarkerAPI(api);
         for (MarkerSet SingleSet : markerAPI.getMarkerSets()) {
-            String[] ArrayName = SingleSet.getId().split("_");
-            aspenLogHelper.sendLogInfo("Loading MarkerSets!");
-            if(ArrayName.length > 0 && ArrayName[0].equals(signMarkerSetIDPrefix)) {
-                new AspenMarkerSet(SingleSet.getLabel(),SingleSet.getLabel());
-                aspenLogHelper.sendLogInfo("Loaded MarkerSet " + SingleSet.getLabel());
+            if(isPrefixedID(SingleSet.getId())) {
+                new AspenMarkerSet(removePrefixFromSetID(SingleSet.getId()),SingleSet.getLabel());
+                aspenLogHelper.sendLogInfo("Loaded MarkerSet '" + SingleSet.getLabel() + "' with full ID '" + SingleSet.getId() + "'");
             }
         }
         saveMarkerAPI(markerAPI);
@@ -89,14 +92,10 @@ public class markerSetHandler {
     public static String listMarkerSets(BlueMapAPI api){
         MarkerAPI markerAPI = getMarkerAPI(api);
         StringBuilder markerSetList = new StringBuilder();
-        int pass = 0;
+
         for (MarkerSet SingleSet : markerAPI.getMarkerSets()) {
-            String[] ArrayName = SingleSet.getId().split("_");
-            if(ArrayName.length > 0 && ArrayName[0].equals(signMarkerSetIDPrefix)) {
-                if(pass == 0){
-                    markerSetList.insert(0, ", " + SingleSet.getLabel());
-                    pass++;
-                }else markerSetList.insert(0, SingleSet.getLabel());
+            if(isPrefixedID(SingleSet.getId())) {
+                markerSetList.insert(0, SingleSet.getLabel());
             }
         }
         return markerSetList.toString();
@@ -104,10 +103,18 @@ public class markerSetHandler {
 
     //These are non-API helper methods
     public static String markerSetNameToID(String MarkerSetName){
-        return signMarkerSetIDPrefix + "_" + MarkerSetName.replaceAll(" ", "-").toUpperCase();
+        return MarkerSetName.toUpperCase().replaceAll(" ", "-");
     }
 
     public static String prefixSetID(String MarkerSetID){
-        return signMarkerSetIDPrefix + "_" + MarkerSetID;
+        return SignMarkerSetIDPrefix + "_" + MarkerSetID;
+    }
+
+    public static String removePrefixFromSetID(String MarkerSetID){
+        return MarkerSetID.replaceAll(SignMarkerSetIDPrefix + "_", "");
+    }
+
+    public static boolean isPrefixedID(String MarkerSetID){
+        return MarkerSetID.startsWith(SignMarkerSetIDPrefix + "_");
     }
 }

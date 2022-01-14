@@ -37,7 +37,7 @@ public class commandHelper implements CommandExecutor {
                                     if (createMarkerSet(api, args[1])) {
                                         aspenChatHelper.sendChat(p, "Marker set " + args[1] + " created!");
                                     } else {
-                                        aspenChatHelper.sendChat(p, "Marker set " + args[1] + " already existed!");
+                                        aspenChatHelper.sendChat(p, "Marker set " + args[1] + " was not created");
                                     }
                                 }, () -> {
                                     //todo throw noAPI error
@@ -49,9 +49,14 @@ public class commandHelper implements CommandExecutor {
                         if (hasPermission(p, DeleteMarkerSetPerm)) {
                             if (args.length == 2) {
                                 BlueMapAPI.getInstance().ifPresentOrElse(api -> {
-                                    if (deleteMarkerSet(api, args[1])) {
-                                        aspenChatHelper.sendChat(p, "Marker set " + args[1] + " has been removed!");
-                                    } else {
+                                    AspenMarkerSet set = getMarkerSetFromName(args[1]);
+                                    if(set != null){
+                                        if (deleteMarkerSet(api, set)) {
+                                            aspenChatHelper.sendChat(p, "Marker set " + args[1] + " has been removed!");
+                                        } else {
+                                            aspenChatHelper.sendChat(p, "Marker set " + args[1] + " wasn't able to be deleted :(");
+                                        }
+                                    }else{
                                         aspenChatHelper.sendChat(p, "Marker set " + args[1] + " doesn't exist!");
                                     }
                                 }, () -> {

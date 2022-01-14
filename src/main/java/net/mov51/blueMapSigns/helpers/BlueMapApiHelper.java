@@ -15,8 +15,8 @@ import java.util.Objects;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
-import static net.mov51.blueMapSigns.helpers.AspenMarkerSet.defaultMarkerSetName;
-import static net.mov51.blueMapSigns.helpers.AspenMarkerSet.signMarkerSetIDPrefix;
+import static net.mov51.blueMapSigns.helpers.AspenMarkerSet.DefaultMarkerSetName;
+import static net.mov51.blueMapSigns.helpers.AspenMarkerSet.SignMarkerSetIDPrefix;
 import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.getMarkerSetFromName;
 
 public class BlueMapApiHelper {
@@ -57,7 +57,7 @@ public class BlueMapApiHelper {
                         }
                     } else {
                         aspenChatHelper.sendChat(p, "That Marker Set doesn't exist!");
-                        aspenLogHelper.sendLogWarning("Marker Set " + MarkerSetName + " doesn't exist!");
+                        aspenLogHelper.sendLogWarning("Marker Set '" + MarkerSetName + "' doesn't exist!");
                     }
                 } else {
                     aspenChatHelper.sendChat(p, "That Marker Set doesn't exist!");
@@ -76,7 +76,7 @@ public class BlueMapApiHelper {
 
     //Method overload for optional default POI icon
     public static void createMarkerPOI(String markerName, Location l,Player p){
-        createMarkerPOI(markerName,l,"",defaultMarkerSetName,p);
+        createMarkerPOI(markerName,l,"", DefaultMarkerSetName,p);
     }
 
     public static void removeMarkerPOI(Location l) {
@@ -94,7 +94,7 @@ public class BlueMapApiHelper {
 
             for (MarkerSet SingleSet : markerAPI.getMarkerSets()) {
                 String[] ArrayName = SingleSet.getId().split("_");
-                if(ArrayName.length > 0 && ArrayName[0].equals(signMarkerSetIDPrefix)){
+                if(ArrayName.length > 0 && ArrayName[0].equals(SignMarkerSetIDPrefix)){
                     markerAPI.getMarkerSet(SingleSet.getId()).ifPresentOrElse(TheMarkerSet -> {
                         if(TheMarkerSet.getMarker(ID).isPresent()){
                             if(TheMarkerSet.removeMarker(ID)){

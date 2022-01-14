@@ -33,7 +33,7 @@ public class iconHelper {
                 if(files.length > 0){
                     for (File file : files) {
                         if (!file.isDirectory()) {
-                            //Split the file name on the . to get both clean name and extension
+                            //Split the file name on the '.' to get both clean name and extension
                             String[] fileName = file.getName().split("\\.");
                             //check that the file extension is PNG by selecting the second part of the array
                             if(fileName[1].equalsIgnoreCase("png")){
