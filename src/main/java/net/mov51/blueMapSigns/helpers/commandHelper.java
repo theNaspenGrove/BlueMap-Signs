@@ -1,7 +1,6 @@
 package net.mov51.blueMapSigns.helpers;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
-import net.mov51.periderm.paper.logs.AspenLogHelper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
-import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
 import static net.mov51.blueMapSigns.helpers.tabCompleteHelper.whatCanRun;
 import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
-import static net.mov51.periderm.paper.logs.Strings.formatArray;
+import static net.mov51.periderm.logs.Strings.formatArray;
 
 public class iconHelper {
 

@@ -12,8 +12,7 @@ import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
 import static net.mov51.blueMapSigns.helpers.AspenMarkerSet.*;
 import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.getMarkerAPI;
 import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.saveMarkerAPI;
-import static net.mov51.periderm.paper.logs.Strings.formatArray;
-
+import static net.mov51.periderm.logs.Strings.formatArray;
 
 public class markerSetHandler {
 

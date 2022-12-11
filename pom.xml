@@ -48,6 +48,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/theAspenGrove/Periderm/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -61,6 +65,11 @@
             <groupId>com.github.BlueMap-Minecraft</groupId>
             <artifactId>BlueMapAPI</artifactId>
             <version>1.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.mov51</groupId>
+            <artifactId>periderm</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>

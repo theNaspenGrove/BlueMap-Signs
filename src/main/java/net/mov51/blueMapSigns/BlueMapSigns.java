@@ -5,8 +5,8 @@ import net.mov51.blueMapSigns.helpers.commandHelper;
 import net.mov51.blueMapSigns.helpers.tabCompleteHelper;
 import net.mov51.blueMapSigns.listeners.signBreakListener;
 import net.mov51.blueMapSigns.listeners.signChangeListener;
-import net.mov51.periderm.paper.chat.AspenChatHelper;
-import net.mov51.periderm.paper.logs.AspenLogHelper;
+import net.mov51.periderm.chat.AspenChatHelper;
+import net.mov51.periderm.logs.AspenLogHelper;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
