@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import static net.mov51.blueMapSigns.helpers.iconHelper.makeData;
+import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.createDefaultMarkerSets;
 
 public final class BlueMapSigns extends JavaPlugin {
 
@@ -18,7 +19,6 @@ public final class BlueMapSigns extends JavaPlugin {
     public static AspenChatHelper aspenChatHelper;
     public static AspenLogHelper aspenLogHelper;
     public static Logger blueLogger;
-    public static String mainCommand = "BlueMap-Signs";
 
     @Override
     public void onEnable() {
@@ -49,6 +49,7 @@ public final class BlueMapSigns extends JavaPlugin {
         BlueMapAPI.onEnable(api -> {
             //make image Data
             makeData();
+            createDefaultMarkerSets(api);
             //load marker sets currently controlled by BlueMap signs
         });
 

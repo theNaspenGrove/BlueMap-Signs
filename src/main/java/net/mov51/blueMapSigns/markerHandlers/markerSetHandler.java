@@ -49,9 +49,5 @@ public class markerSetHandler {
                 .build();
     }
 
-    private static boolean defaultMarkerSetExists(){
-        return markerSetExists;
-    }
-
     //These are non-API helper methods
 }

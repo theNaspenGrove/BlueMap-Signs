@@ -23,8 +23,6 @@ public class iconHelper {
 
     public static void makeData(){
         BlueMapAPI.getInstance().ifPresentOrElse(api -> {
-            createDefaultMarkerSets(api);
-
             //code executed when the api is enabled (skipped if the api is not enabled)
             File f = BlueMapSigns.plugin.getDataFolder();
             Path fP = Paths.get(f.toPath() + "/icons");
