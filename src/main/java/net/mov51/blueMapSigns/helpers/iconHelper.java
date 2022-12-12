@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
+import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.createDefaultMarkerSets;
 import static net.mov51.periderm.logs.Strings.formatArray;
 
 public class iconHelper {
@@ -22,12 +23,13 @@ public class iconHelper {
 
     public static void makeData(){
         BlueMapAPI.getInstance().ifPresentOrElse(api -> {
+            createDefaultMarkerSets(api);
+
             //code executed when the api is enabled (skipped if the api is not enabled)
             File f = BlueMapSigns.plugin.getDataFolder();
             Path fP = Paths.get(f.toPath() + "/icons");
             File fF = fP.toFile();
             ArrayList<String> madeIcons = new ArrayList<>();
-
 
             File[] files = fF.listFiles();
             if (files != null) {
@@ -44,8 +46,8 @@ public class iconHelper {
                                 try {
                                     //Generate the Buffered image from the file
                                     BufferedImage image = ImageIO.read(file);
-                                    //create the image and store it's path using the BlueMap api
-                                    String path = api.createImage(image,cleanName);
+                                    //create the image and store its path using the BlueMap api
+                                    String path = api.getWebApp().createImage(image,cleanName);
                                     //add the new icon to the map for verification later.
                                     icons.put(cleanName,new pairHelper<>(path,image));
 

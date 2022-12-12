@@ -1,8 +1,6 @@
 package net.mov51.blueMapSigns;
 
 import de.bluecolored.bluemap.api.BlueMapAPI;
-import net.mov51.blueMapSigns.helpers.commandHelper;
-import net.mov51.blueMapSigns.helpers.tabCompleteHelper;
 import net.mov51.blueMapSigns.listeners.signBreakListener;
 import net.mov51.blueMapSigns.listeners.signChangeListener;
 import net.mov51.periderm.chat.AspenChatHelper;
@@ -10,11 +8,9 @@ import net.mov51.periderm.logs.AspenLogHelper;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 import static net.mov51.blueMapSigns.helpers.iconHelper.makeData;
-import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.loadAllMarkerSets;
 
 public final class BlueMapSigns extends JavaPlugin {
 
@@ -40,9 +36,6 @@ public final class BlueMapSigns extends JavaPlugin {
 
         plugin.saveDefaultConfig();
 
-        Objects.requireNonNull(getCommand(mainCommand)).setExecutor(new commandHelper());
-        Objects.requireNonNull(getCommand(mainCommand)).setTabCompleter(new tabCompleteHelper());
-
         if(!iconDataF.exists()){
             boolean wasCreate = iconDataF.mkdirs();
             if(wasCreate){
@@ -57,7 +50,6 @@ public final class BlueMapSigns extends JavaPlugin {
             //make image Data
             makeData();
             //load marker sets currently controlled by BlueMap signs
-            loadAllMarkerSets(api);
         });
 
         getServer().getPluginManager().registerEvents(new signChangeListener(), this);

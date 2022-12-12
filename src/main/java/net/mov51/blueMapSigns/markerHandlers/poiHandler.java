@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenChatHelper;
-import static net.mov51.blueMapSigns.helpers.AspenMarkerSet.DefaultMarkerSetName;
 import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.createMarkerPOI;
 
 public class poiHandler {
@@ -17,16 +16,13 @@ public class poiHandler {
         }else if(Text[2].length() == 0 && Text[3].length() == 0){
             aspenChatHelper.sendChat(p,"Ok "+name+"! I'll make a marker with the default icon and a name of \"" + Text[1] + "\"");
             //use overloaded method to create a marker with the default POI icon
-            createMarkerPOI(Text[1], l,p);
-
+            createMarkerPOI(Text[1], l);
         }else if(Text[3].length() == 0){
             aspenChatHelper.sendChat(p,"Ok "+name+"! I'll make a marker with the name of \""  + Text[1] + "\" and the icon \"" + Text[2] + "\"");
             //create a marker with the provided icon
-            createMarkerPOI(Text[1],l,Text[2], DefaultMarkerSetName,p);
+            createMarkerPOI(Text[1],l,Text[2]);
         }else{
-            //take the 4th line of the sign as a markerSet
-            aspenChatHelper.sendChat(p,"Ok "+name+"! I'll make a marker with the name of \""  + Text[1] + "\" in marker set \"" + Text[3] + "\"");
-            createMarkerPOI(Text[1],l,Text[2],Text[3],p);
+            aspenChatHelper.sendChat(p,"You have too many lines! Please only use lines 1, 2, and 3!");
         }
     }
 }
