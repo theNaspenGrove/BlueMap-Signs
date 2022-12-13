@@ -3,7 +3,7 @@ version: ${project.version}
 main: net.mov51.blueMapSigns.BlueMapSigns
 api-version: 1.16
 depend: [BlueMap]
-softdepend: [BlueMapAPI]
+softdepend: []
 
 commands:
   BlueMap-Signs:

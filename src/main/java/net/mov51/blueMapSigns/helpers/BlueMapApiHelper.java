@@ -33,7 +33,7 @@ public class BlueMapApiHelper {
 
             api.getWorld(world).ifPresent(BlueWorld -> {
                 for (BlueMapMap map : BlueWorld.getMaps()) {
-                    map.getMarkerSets().get(DefaultMarkerSetID).put(generateMarkerID(l), marker);
+                    map.getMarkerSets().get(generateMarkerSetID(map)).put(generateMarkerID(l), marker);
                 }
             });
         });
@@ -49,7 +49,7 @@ public class BlueMapApiHelper {
 
         BlueMapAPI.getInstance().flatMap(api -> api.getWorld(l.getWorld())).ifPresent(BlueWorld -> {
             for (BlueMapMap map : BlueWorld.getMaps()) {
-                map.getMarkerSets().get(DefaultMarkerSetID).remove(generateMarkerID(l));
+                map.getMarkerSets().get(generateMarkerSetID(map)).remove(generateMarkerID(l));
             }
         });
     }

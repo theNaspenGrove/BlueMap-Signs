@@ -14,14 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.mov51.blueMapSigns.BlueMapSigns.aspenLogHelper;
-import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.createDefaultMarkerSets;
 import static net.mov51.periderm.logs.Strings.formatArray;
 
 public class iconHelper {
 
     public static Map<String,pairHelper<String,BufferedImage>> icons = new HashMap<>();
 
-    public static void makeData(){
+    public static void makeIconData(){
         BlueMapAPI.getInstance().ifPresentOrElse(api -> {
             //code executed when the api is enabled (skipped if the api is not enabled)
             File f = BlueMapSigns.plugin.getDataFolder();
