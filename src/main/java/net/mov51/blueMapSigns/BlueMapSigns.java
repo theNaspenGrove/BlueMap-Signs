@@ -5,7 +5,7 @@ import de.bluecolored.bluemap.api.gson.MarkerGson;
 import de.bluecolored.bluemap.api.markers.MarkerSet;
 import net.mov51.blueMapSigns.listeners.signBreakListener;
 import net.mov51.blueMapSigns.listeners.signChangeListener;
-import net.mov51.blueMapSigns.markerHandlers.markerSetHandler;
+import net.mov51.blueMapSigns.markerHandlers.AspenMarkers;
 import net.mov51.periderm.chat.AspenChatHelper;
 import net.mov51.periderm.logs.AspenLogHelper;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +26,7 @@ public final class BlueMapSigns extends JavaPlugin {
     public static AspenLogHelper aspenLogHelper;
     public static Logger blueLogger;
 
-    File dataFolder = BlueMapSigns.plugin.getDataFolder();
+    File dataFolder;
     @Override
     public void onEnable() {
         plugin = this;
@@ -34,6 +34,7 @@ public final class BlueMapSigns extends JavaPlugin {
         String ConfigChatPrefix = BlueMapSigns.plugin.getConfig().getString("chat-prefix");
         aspenChatHelper = new AspenChatHelper((ConfigChatPrefix != null) ? ConfigChatPrefix : "BlueMap-Signs");
 
+        dataFolder = BlueMapSigns.plugin.getDataFolder();
         blueLogger = BlueMapSigns.plugin.getLogger();
         aspenLogHelper = new AspenLogHelper(blueLogger,"BlueMap-Signs");
 
@@ -64,20 +65,12 @@ public final class BlueMapSigns extends JavaPlugin {
             }
         }
 
-        loadMarkerSets();
-        BlueMapAPI.onDisable(api -> {
-            api.getMaps().forEach(map -> {
-                MarkerSet MarkerSetToSave = map.getMarkerSets().get(generateMarkerSetID(map));
-                String path = dataFolder + "/marker-sets/" + generateMarkerSetID(map)+ ".json";
-                File file = new File(path + generateMarkerSetID(map) + ".json");
-                try (FileWriter writer = new FileWriter(file)) {
-                    MarkerGson.INSTANCE.toJson(MarkerSetToSave, writer);
-                } catch (IOException ex) {
-                    // handle io-exception
-                    ex.printStackTrace();
-                }
-            });
+        BlueMapAPI.onEnable(api -> {
+            makeIconData(api);
+            loadMarkerSets(api);
+            createDefaultMarkerSets(api);
         });
+
 
         getServer().getPluginManager().registerEvents(new signChangeListener(), this);
         getServer().getPluginManager().registerEvents(new signBreakListener(), this);
@@ -90,36 +83,41 @@ public final class BlueMapSigns extends JavaPlugin {
     }
 
     private void saveMarkerSets(){
-
+        for (AspenMarkers aspenMarker : aspenMarkers) {
+            String markerSetID = aspenMarker.getMarkerSetID();
+            MarkerSet markerSet = aspenMarker.getMap().getMarkerSets().get(markerSetID);
+            if(markerSet != null){
+                String markerSetPath = dataFolder + "/marker-sets/" + markerSetID + ".json";
+                try (FileWriter writer = new FileWriter(markerSetPath)) {
+                    MarkerGson.INSTANCE.toJson(markerSet, writer);
+                } catch (IOException ex) {
+                    // handle io-exception
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
-    private void loadMarkerSets(){
+    private void loadMarkerSets(BlueMapAPI api){
         //Wait for the BlueMap API to enable
-        BlueMapAPI.onEnable(api -> {
-            //make image Data
-            makeIconData();
             api.getMaps().forEach(map -> {
                 MarkerSet MarkerSetToLoad = null;
-                File f = BlueMapSigns.plugin.getDataFolder();
-                String path = f + "/marker-sets/" + generateMarkerSetID(map)+ ".json";
-                File file = new File(path + "marker-file" + generateMarkerSetID(map) + ".json");
+                String path = dataFolder + "/marker-sets/" + generateMarkerSetID(map)+ ".json";
+                File file = new File(path);
                 if(file.exists()){
-                    try (FileReader reader = new FileReader("marker-file" + generateMarkerSetID(map) + ".json")) {
+                    try (FileReader reader = new FileReader(path)) {
                         MarkerSetToLoad = MarkerGson.INSTANCE.fromJson(reader, MarkerSet.class);
                     } catch (IOException ex) {
                         // handle io-exception
                         ex.printStackTrace();
                     }
-                    MarkerSet finalMarkerSetToLoad = MarkerSetToLoad;
-                    map.getMarkerSets().put(generateMarkerSetID(map), finalMarkerSetToLoad);
+                    aspenMarkers.add(new AspenMarkers(generateMarkerSetID(map),MarkerSetToLoad,map));
                 }else {
                     aspenLogHelper.sendLogWarning("No marker file found for map " + map.getId());
                 }
             });
-            createDefaultMarkerSets(api);
-            //load marker sets currently controlled by BlueMap signs
-        });
+            for (AspenMarkers aspenMarker : aspenMarkers) {
+                aspenMarker.getMap().getMarkerSets().put(aspenMarker.getMarkerSetID(),aspenMarker.getMarkerSet());
+            }
     }
-
-
 }
