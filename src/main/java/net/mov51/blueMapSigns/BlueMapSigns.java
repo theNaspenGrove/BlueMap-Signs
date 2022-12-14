@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static net.mov51.blueMapSigns.helpers.iconHelper.makeIconData;
@@ -25,8 +26,8 @@ public final class BlueMapSigns extends JavaPlugin {
     public static AspenChatHelper aspenChatHelper;
     public static AspenLogHelper aspenLogHelper;
     public static Logger blueLogger;
-
-    File dataFolder;
+    private static File dataFolder;
+    private static File markerDataFolder;
     @Override
     public void onEnable() {
         plugin = this;
@@ -38,8 +39,7 @@ public final class BlueMapSigns extends JavaPlugin {
         blueLogger = BlueMapSigns.plugin.getLogger();
         aspenLogHelper = new AspenLogHelper(blueLogger,"BlueMap-Signs");
 
-        File data = plugin.getDataFolder();
-        String iconDataP = data + "/icons";
+        String iconDataP = dataFolder + "/icons";
         File iconDataF = new File(iconDataP);
 
         plugin.saveDefaultConfig();
@@ -53,11 +53,11 @@ public final class BlueMapSigns extends JavaPlugin {
             }
         }
 
-        String markerDataP = data + "/marker-sets";
-        File markerDataF = new File(markerDataP);
+        String markerDataPath = dataFolder + "/marker-sets/";
+        markerDataFolder = new File(markerDataPath);
 
-        if(!markerDataF.exists()){
-            boolean wasCreate = markerDataF.mkdirs();
+        if(!markerDataFolder.exists()){
+            boolean wasCreate = markerDataFolder.mkdirs();
             if(wasCreate){
                 aspenLogHelper.sendLogWarning("Plugin marker data folder has been created!");
             }else{
@@ -71,7 +71,6 @@ public final class BlueMapSigns extends JavaPlugin {
             createDefaultMarkerSets(api);
         });
 
-
         getServer().getPluginManager().registerEvents(new signChangeListener(), this);
         getServer().getPluginManager().registerEvents(new signBreakListener(), this);
     }
@@ -83,11 +82,11 @@ public final class BlueMapSigns extends JavaPlugin {
     }
 
     private void saveMarkerSets(){
-        for (AspenMarkers aspenMarker : aspenMarkers) {
-            String markerSetID = aspenMarker.getMarkerSetID();
-            MarkerSet markerSet = aspenMarker.getMap().getMarkerSets().get(markerSetID);
+        for(Map.Entry<String,AspenMarkers> aspenMarker: aspenMarkers.entrySet()){
+            String markerSetID = aspenMarker.getValue().getMarkerSetID();
+            MarkerSet markerSet = aspenMarker.getValue().getMap().getMarkerSets().get(markerSetID);
             if(markerSet != null){
-                String markerSetPath = dataFolder + "/marker-sets/" + markerSetID + ".json";
+                String markerSetPath = markerDataFolder + "/" + markerSetID + ".json";
                 try (FileWriter writer = new FileWriter(markerSetPath)) {
                     MarkerGson.INSTANCE.toJson(markerSet, writer);
                 } catch (IOException ex) {
@@ -99,10 +98,10 @@ public final class BlueMapSigns extends JavaPlugin {
     }
 
     private void loadMarkerSets(BlueMapAPI api){
-        //Wait for the BlueMap API to enable
+        if(aspenMarkers.isEmpty()){
             api.getMaps().forEach(map -> {
                 MarkerSet MarkerSetToLoad = null;
-                String path = dataFolder + "/marker-sets/" + generateMarkerSetID(map)+ ".json";
+                String path = markerDataFolder + "/" + generateMarkerSetID(map)+ ".json";
                 File file = new File(path);
                 if(file.exists()){
                     try (FileReader reader = new FileReader(path)) {
@@ -111,13 +110,16 @@ public final class BlueMapSigns extends JavaPlugin {
                         // handle io-exception
                         ex.printStackTrace();
                     }
-                    aspenMarkers.add(new AspenMarkers(generateMarkerSetID(map),MarkerSetToLoad,map));
+                    aspenMarkers.put(generateMarkerSetID(map), new AspenMarkers(generateMarkerSetID(map),MarkerSetToLoad,map));
                 }else {
                     aspenLogHelper.sendLogWarning("No marker file found for map " + map.getId());
                 }
             });
-            for (AspenMarkers aspenMarker : aspenMarkers) {
-                aspenMarker.getMap().getMarkerSets().put(aspenMarker.getMarkerSetID(),aspenMarker.getMarkerSet());
-            }
+        }
+        for(Map.Entry<String,AspenMarkers> aspenMarker: aspenMarkers.entrySet()){
+            api.getMap(aspenMarker.getValue().getMap().getId()).ifPresent(map -> {
+                map.getMarkerSets().put(aspenMarker.getValue().getMarkerSetID(),aspenMarker.getValue().getMarkerSet());
+            });
+        }
     }
 }

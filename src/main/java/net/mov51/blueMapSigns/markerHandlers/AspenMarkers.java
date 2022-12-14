@@ -1,7 +1,6 @@
 package net.mov51.blueMapSigns.markerHandlers;
 
 import de.bluecolored.bluemap.api.BlueMapMap;
-import de.bluecolored.bluemap.api.markers.Marker;
 import de.bluecolored.bluemap.api.markers.MarkerSet;
 import de.bluecolored.bluemap.api.markers.POIMarker;
 import net.mov51.blueMapSigns.helpers.iconHelper;
@@ -9,10 +8,8 @@ import net.mov51.blueMapSigns.helpers.pairHelper;
 import org.bukkit.Location;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 import static net.mov51.blueMapSigns.helpers.BlueMapApiHelper.generateMarkerID;
-import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.generateMarkerSetID;
 
 public class AspenMarkers {
     String markerSetID;
