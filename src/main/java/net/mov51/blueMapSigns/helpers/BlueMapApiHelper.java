@@ -30,7 +30,6 @@ public class BlueMapApiHelper {
                 int y = image.getWidth() / 2;
                 marker.setIcon(iconPath, x, y);
             }
-
             api.getWorld(world).ifPresent(BlueWorld -> {
                 for (BlueMapMap map : BlueWorld.getMaps()) {
                     map.getMarkerSets().get(generateMarkerSetID(map)).put(generateMarkerID(l), marker);
@@ -39,13 +38,10 @@ public class BlueMapApiHelper {
             });
         });
     }
-
-
     //Method overload for optional default POI icon
     public static void createMarkerPOI(String markerName, Location l){
         createMarkerPOI(markerName,l,"");
     }
-
     public static void removeMarkerPOI(Location l) {
 
         BlueMapAPI.getInstance().flatMap(api -> api.getWorld(l.getWorld())).ifPresent(BlueWorld -> {
@@ -55,7 +51,6 @@ public class BlueMapApiHelper {
             }
         });
     }
-
     public static String generateMarkerID(Location l){
         //Generate the marker ID with the exact location of the sign and the world it's in. Since there can only ever be one sign in that spot, there shouldn't be any confusion if I use the generated ID to remove the marker when the sign is broken.
         return Objects.requireNonNull(l.getWorld()).getName() + "_" + l.getX() + "-" + l.getY() + "-" + l.getZ();
