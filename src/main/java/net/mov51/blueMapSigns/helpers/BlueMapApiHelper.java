@@ -34,7 +34,7 @@ public class BlueMapApiHelper {
             api.getWorld(world).ifPresent(BlueWorld -> {
                 for (BlueMapMap map : BlueWorld.getMaps()) {
                     map.getMarkerSets().get(generateMarkerSetID(map)).put(generateMarkerID(l), marker);
-                    aspenMarkers.get(generateMarkerSetID(map)).addMarker(markerName, l, icon);
+                    aspenMarkers.get(generateMarkerSetID(map)).addMarker(generateMarkerID(l), marker);
                 }
             });
         });
