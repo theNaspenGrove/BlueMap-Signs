@@ -80,46 +80,4 @@ public final class BlueMapSigns extends JavaPlugin {
         // Plugin shutdown logic
         saveMarkerSets();
     }
-
-    private void saveMarkerSets(){
-        for(Map.Entry<String,AspenMarkers> aspenMarker: aspenMarkers.entrySet()){
-            String markerSetID = aspenMarker.getValue().getMarkerSetID();
-            MarkerSet markerSet = aspenMarker.getValue().getMap().getMarkerSets().get(markerSetID);
-            if(markerSet != null){
-                String markerSetPath = markerDataFolder + "/" + markerSetID + ".json";
-                try (FileWriter writer = new FileWriter(markerSetPath)) {
-                    MarkerGson.INSTANCE.toJson(markerSet, writer);
-                } catch (IOException ex) {
-                    // handle io-exception
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void loadMarkerSets(BlueMapAPI api){
-        if(aspenMarkers.isEmpty()){
-            api.getMaps().forEach(map -> {
-                MarkerSet MarkerSetToLoad = null;
-                String path = markerDataFolder + "/" + generateMarkerSetID(map)+ ".json";
-                File file = new File(path);
-                if(file.exists()){
-                    try (FileReader reader = new FileReader(path)) {
-                        MarkerSetToLoad = MarkerGson.INSTANCE.fromJson(reader, MarkerSet.class);
-                    } catch (IOException ex) {
-                        // handle io-exception
-                        ex.printStackTrace();
-                    }
-                    aspenMarkers.put(generateMarkerSetID(map), new AspenMarkers(generateMarkerSetID(map),MarkerSetToLoad,map));
-                }else {
-                    aspenLogHelper.sendLogWarning("No marker file found for map " + map.getId());
-                }
-            });
-        }
-        for(Map.Entry<String,AspenMarkers> aspenMarker: aspenMarkers.entrySet()){
-            api.getMap(aspenMarker.getValue().getMap().getId()).ifPresent(map -> {
-                map.getMarkerSets().put(aspenMarker.getValue().getMarkerSetID(),aspenMarker.getValue().getMarkerSet());
-            });
-        }
-    }
 }
