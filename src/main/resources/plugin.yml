@@ -2,7 +2,7 @@ name: BlueMap-Signs
 version: ${project.version}
 main: net.mov51.blueMapSigns.BlueMapSigns
 api-version: 1.16
-depend: [BlueMap]
+depend: [BlueMap, Periderm]
 softdepend: []
 
 commands:
