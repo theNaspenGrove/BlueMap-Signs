@@ -13,13 +13,13 @@ import static net.mov51.blueMapSigns.markerHandlers.markerSetHandler.*;
 
 public class BlueMapApiHelper {
 
-    public static void createMarkerPOI(String markerName, Location l, String icon){
+    public static void createMarkerPOI(String markerName, Location l, String icon, String markerSetName){
         //get world to run loop on
         World world = l.getWorld();
         BlueMapAPI.getInstance().ifPresent(api -> {
             POIMarker marker = POIMarker.builder()
                     .label(markerName)
-                    .position(l.getBlockX(), l.getBlockY(), l.getBlockZ())
+                    .position(l.toCenterLocation().getBlockX(), l.toCenterLocation().getBlockY(), l.toCenterLocation().getBlockZ())
                     .build();
             if (!icon.isEmpty() && iconHelper.icons.containsKey(icon)) {
                 pairHelper<String, BufferedImage> pair = iconHelper.icons.get(icon);
@@ -32,8 +32,16 @@ public class BlueMapApiHelper {
             }
             api.getWorld(world).ifPresent(BlueWorld -> {
                 for (BlueMapMap map : BlueWorld.getMaps()) {
-                    map.getMarkerSets().get(generateMarkerSetID(map)).put(generateMarkerID(l), marker);
-                    aspenMarkers.get(generateMarkerSetID(map)).addMarker(generateMarkerID(l), marker);
+                    if(markerSetExists((!markerSetName.isEmpty() ? generateMarkerSetID(map, markerSetName) : generateMarkerSetID(map)), map)){
+                        map.getMarkerSets().get(generateMarkerSetID(map)).put(generateMarkerID(l), marker);
+                        aspenMarkers.get(generateMarkerSetID(map)).addMarker(generateMarkerID(l), marker);
+                    }else{
+                        createMarkerSet(api, map, markerSetName);
+                        System.out.println("Created marker set " + generateMarkerSetID(map, markerSetName));
+                        map.getMarkerSets().get(generateMarkerSetID(map, markerSetName)).put(generateMarkerID(l), marker);
+                        aspenMarkers.get(generateMarkerSetID(map, markerSetName)).addMarker(generateMarkerID(l), marker);
+                    }
+
                 }
             });
         });
@@ -41,6 +49,9 @@ public class BlueMapApiHelper {
     //Method overload for optional default POI icon
     public static void createMarkerPOI(String markerName, Location l){
         createMarkerPOI(markerName,l,"");
+    }
+    public static void createMarkerPOI(String markerName, Location l, String icon){
+        createMarkerPOI(markerName, l, icon, "");
     }
     public static void removeMarkerPOI(Location l) {
 

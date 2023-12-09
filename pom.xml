@@ -6,7 +6,7 @@
 
     <groupId>net.mov51</groupId>
     <artifactId>BlueMap-Signs</artifactId>
-    <version>1.5_V2-API-Snapshot</version>
+    <version>1.5_V2-API-Snapshot-2</version>
     <build>
         <plugins>
             <plugin>
